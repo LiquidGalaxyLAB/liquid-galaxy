@@ -18,7 +18,7 @@ echo "DISPLAY_portion = \"${DISPLAY##*\.}\"."
 
 . ${HOME}/etc/shell.conf
 
-FRAME_NO="$(cat /home/lg/frame)"
+FRAME_NO="$(cat /lg/frame)"
 
 echo "MY FRAME = \"${FRAME_NO}\"."
 

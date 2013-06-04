@@ -76,13 +76,10 @@ while true ; do
     rm -rf ${HOME}/.googleearth/Temp/*
     rm -f ${EARTH_QUERY:-/tmp/query.txt}
     # shove mouse over to touchscreen interface
-    if [[ "$DIR" == "master" ]]; then
-        # use the touchscreen
-        DISPLAY=:0 xdotool mousemove -screen 1 1910 1190
-    else
-        # lock the keyboard and mouse
-        DISPLAY=:0 xtrlock & DISPLAY=:0 xdotool mousemove -screen 0 1190 1910
-    fi
+
+    # move mouse
+    DISPLAY=:0 /usr/bin/xdotool mousemove -screen 0 1190 1910
+
     logger -p local3.info -i "$0: running earth"
     ./googleearth -style cleanlooks --fullscreen -font '-adobe-helvetica-bold-r-normal-*-3-*-*-*-p-*-iso8859-1'
     # Normally use TINY font size to make the menu bar small and unobtrusive, but error windows become unreadable.

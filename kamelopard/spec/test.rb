@@ -281,27 +281,6 @@ shared_examples_for 'Kamelopard::Object' do
         end
 
     end
-
-    it 'creates valid Change objects' do
-        # Objects can set @attr_name and @new_value
-        if (! @attr_name.nil? and ! @new_value.nil?) then
-            c = @o.change(@attr_name, @new_value)
-            c.should be_a_kind_of(XML::Node)
-            c.name.should == 'Change'
-            c.first.should_not be_nil
-            c.first.name.should == @o.class.name.gsub(/^Kamelopard::/, '')
-            c.first.attributes[:targetId].should == @o.kml_id
-            c.first.first.name.should == @attr_name.to_s
-            c.first.first.first.text?.should be_true
-            c.first.first.first.to_s.should == @new_value.to_s
-        # ... or they can set @skip_change to avoid this test
-        elsif (! @skip_change.nil? and @skip_change) then
-            # Nothing happens here
-        # ... or they'll get a FAIL
-        else 
-            fail "#{@o.class.name} needs to set @skip_change, or @attr_name and @new_value"
-        end
-    end
 end
 
 shared_examples_for 'altitudeMode' do
@@ -450,12 +429,6 @@ shared_examples_for 'Kamelopard::Camera-like' do
         get_obj_child(@o, 'altitude').should_not be_nil
         get_obj_child(@o, 'heading').should_not be_nil
         get_obj_child(@o, 'tilt').should_not be_nil
-    end
-
-    it 'creates a queries.txt entry' do
-        q = @o.to_queries_txt('name', 'planet')
-        q.should_not be_nil
-        q.should match /planet@name@flytoview=/
     end
 end
 
@@ -802,7 +775,6 @@ end
 
 describe 'Kamelopard::Point' do
     before(:each) do
-        @skip_change = true
         @attrs = { :lat => 12.4, :long => 34.2, :alt => 500 }
         @fields = %w[ latitude longitude altitude altitudeMode extrude ]
         @o = Kamelopard::Point.new(@attrs[:long], @attrs[:lat], @attrs[:alt])
@@ -865,7 +837,6 @@ end
 
 describe 'Kamelopard::LineString' do
     before(:each) do
-        @skip_change = true
         @o = Kamelopard::LineString.new([ [1,2,3], [2,3,4], [3,4,5] ])
         @fields = %w[
             altitudeOffset extrude tessellate altitudeMode
@@ -902,7 +873,6 @@ end
 
 describe 'Kamelopard::LinearRing' do
     before(:each) do
-        @skip_change = true
         @o = Kamelopard::LinearRing.new([ [1,2,3], [2,3,4], [3,4,5] ])
         @fields = %w[ altitudeOffset extrude tessellate altitudeMode ]
     end
@@ -932,7 +902,6 @@ end
 
 describe 'Kamelopard::Camera' do
     before(:each) do
-        @skip_change = true
         @o = Kamelopard::Camera.new(
             Kamelopard::Point.new( 123, -123, 123 ),
             {
@@ -956,7 +925,6 @@ end
 
 describe 'Kamelopard::LookAt' do
     before(:each) do
-        @skip_change = true
         @o = Kamelopard::LookAt.new(
             Kamelopard::Point.new( 123, -123, 123 ),
             {
@@ -982,7 +950,6 @@ end
 
 describe 'Kamelopard::TimeStamp' do
     before(:each) do
-        @skip_change = true
         @when = '01 Dec 1934 12:12:12 PM'
         @o = Kamelopard::TimeStamp.new @when
         @fields = [ :when ]
@@ -1011,7 +978,6 @@ end
 
 describe 'Kamelopard::TimeSpan' do
     before(:each) do
-        @skip_change = true
         @begin = '01 Dec 1934 12:12:12 PM'
         @end = '02 Dec 1934 12:12:12 PM'
         @o = Kamelopard::TimeSpan.new({ :begin => @begin, :end => @end })
@@ -1031,8 +997,6 @@ end
 
 describe 'Kamelopard::Feature' do
     before(:each) do
-        @attr_name = :visibility
-        @new_value = 1
         @o = Kamelopard::Feature.new('Some feature')
         @fields = []
     end
@@ -1063,7 +1027,6 @@ end
 
 describe 'Kamelopard::Folder' do
     before(:each) do
-        @skip_change = true
         @o = Kamelopard::Folder.new('test folder')
         @fields = []
     end
@@ -1073,7 +1036,6 @@ end
 
 describe 'Kamelopard::Document' do
     before(:each) do
-        @skip_change = true
         @o = Kamelopard::DocumentHolder.instance.current_document
         
         # Subsequent runs seem to keep the vsr_actions from previous runs, so clear 'em
@@ -1134,8 +1096,6 @@ end
 
 describe 'Kamelopard::ColorStyle' do
     before(:each) do
-        @new_value = '11111111'
-        @attr_name = :color
         @o = Kamelopard::ColorStyle.new 'ffffffff'
     end
 
@@ -1170,8 +1130,6 @@ end
 
 describe 'Kamelopard::BalloonStyle' do
     before(:each) do
-        @new_value = '11111111'
-        @attr_name = :color
         @o = Kamelopard::BalloonStyle.new 'balloon text'
         @o.textColor = 'deadbeef'
         @o.bgColor = 'deadbeef'
@@ -1256,8 +1214,6 @@ end
 
 describe 'Kamelopard::IconStyle' do
     before(:each) do
-        @new_value = '11111111'
-        @attr_name = :color
         @href = 'Kamelopard::IconStyle href'
         @scale = 1.0
         @heading = 2.0
@@ -1306,8 +1262,6 @@ end
 
 describe 'Kamelopard::LabelStyle' do
     before(:each) do
-        @new_value = '11111111'
-        @attr_name = :color
         @fields = %w[ scale color colorMode ]
         @scale = 2
         @color = 'abcdefab'
@@ -1329,8 +1283,6 @@ end
 
 describe 'Kamelopard::LineStyle' do
     before(:each) do
-        @new_value = '11111111'
-        @attr_name = :color
         @width = 1
         @outerColor = 'aaaaaaaa'
         @outerWidth = 2
@@ -1368,8 +1320,6 @@ end
 
 describe 'Kamelopard::ListStyle' do
     before(:each) do
-        @new_value = '11111111'
-        @attr_name = :color
         @bgColor = 'ffffffff'
         @state = :closed
         @listItemType = :check
@@ -1402,8 +1352,6 @@ end
 
 describe 'Kamelopard::PolyStyle' do
     before(:each) do
-        @attr_name = :color
-        @new_value = '11111111'
         @fill = 1
         @outline = 1
         @color = 'abcdefab'
@@ -1434,7 +1382,6 @@ end
 
 describe 'StyleSelector' do
     before(:each) do
-        @skip_change = true
         @o = Kamelopard::StyleSelector.new
     end
 
@@ -1449,7 +1396,6 @@ end
 
 describe 'Style' do
     before(:each) do
-        @skip_change = true
         i, la, lin, p, b, lis = get_test_substyles
         @o = Kamelopard::Style.new({
             :icon => i,
@@ -1487,7 +1433,6 @@ describe 'StyleMap' do
     end
 
     before(:each) do
-        @skip_change = true
         i, la, lin, p, b, lis = get_test_substyles
         s = Kamelopard::Style.new({
             :icon => i,
@@ -1512,8 +1457,6 @@ end
 
 describe 'Kamelopard::Placemark' do
     before(:each) do
-        @attr_name = 'gx:balloonVisibility'
-        @new_value = 1
         @p = Kamelopard::Point.new( 123, 123 )
         @o = Kamelopard::Placemark.new({
             :name => 'placemark',
@@ -1549,8 +1492,6 @@ end
 
 describe 'Kamelopard::FlyTo' do
     before(:each) do
-        @attr_name = :duration
-        @new_value = 10
         @o = Kamelopard::FlyTo.new
     end
 
@@ -1577,7 +1518,6 @@ end
 
 describe 'Kamelopard::AnimatedUpdate' do
     before(:each) do
-        @skip_change = true
         @duration = 10
         @target = 'abcd'
         @delayedstart = 10
@@ -1615,7 +1555,6 @@ end
 
 describe 'Kamelopard::TourControl' do
     before(:each) do
-        @skip_change = true
         @o = Kamelopard::TourControl.new
     end
 
@@ -1628,7 +1567,6 @@ end
 
 describe 'Kamelopard::Wait' do
     before(:each) do
-        @skip_change = true
         @pause = 10
         @o = Kamelopard::Wait.new(@pause)
     end
@@ -1642,8 +1580,6 @@ end
 
 describe 'Kamelopard::SoundCue' do
     before(:each) do
-        @attr_name = :href
-        @new_value = 'new href'
         @href = 'href'
         @delayedStart = 10.0
         @o = Kamelopard::SoundCue.new @href, @delayedStart
@@ -1660,7 +1596,6 @@ end
 
 describe 'Kamelopard::Tour' do
     before(:each) do
-        @skip_change = true
         @name = 'TourName'
         @description = 'TourDescription'
         @o = Kamelopard::Tour.new @name, @description
@@ -1692,8 +1627,6 @@ end
 
 describe 'Kamelopard::ScreenOverlay' do
     before(:each) do
-        @attr_name = :color
-        @new_value = '11111111'
         @x = 10
         @un = :pixel
         @xy = Kamelopard::XY.new @x, @x, @un, @un
@@ -1791,8 +1724,6 @@ describe 'Kamelopard::PhotoOverlay' do
             :gridOrigin => @n
         })
         @fields = %w[ rotation point shape ]
-        @attr_name = :color
-        @new_value = '11111111'
     end
 
     it_should_behave_like 'Kamelopard::Overlay'
@@ -1865,8 +1796,6 @@ describe 'Kamelopard::GroundOverlay' do
         @altmode = :relativeToSeaFloor
         @o = Kamelopard::GroundOverlay.new @icon_href, { :latlonbox => @lb, :latlonquad => @lq, :altitude => @n, :altitudeMode => @altmode }
         @fields = %w[ altitude altitudeMode latlonbox latlonquad ]
-        @attr_name = :color
-        @new_value = '11111111'
     end
 
     it_should_behave_like 'Kamelopard::Overlay'
@@ -1912,7 +1841,6 @@ end
 
 describe 'Kamelopard::Region' do
     before(:each) do
-        @skip_change = true
         @n = 12
         @lb = Kamelopard::LatLonBox.new @n, @n, @n, @n, @n, @n, @n, :relativeToGround
         @ld = Kamelopard::Lod.new @n, @n, @n, @n
@@ -2034,8 +1962,6 @@ end
 
 describe 'Kamelopard::Link' do
     before(:each) do
-        @attr_name = :href
-        @new_value = 'something else'
         @href = 'some href'
         @refreshMode = :onInterval
         @viewRefreshMode = :onRegion
@@ -2071,8 +1997,6 @@ end
 
 describe 'Kamelopard::Model' do
     before(:each) do
-        @attr_name = :scale
-        @new_value = 10
         @n = 123
         @href = 'some href'
         @refreshMode = :onInterval
@@ -2285,100 +2209,4 @@ describe 'DocumentHolder' do
         get_document.name.should == 'Second'
 
     end
-
-    it 'supports changing the current document' do
-        pending 'Still need to write this one'
-    end
-end
-
-def val_within_range(o, val, expected, perc)
-    res = o.run_function(val)
-    res.should <= expected + perc
-    res.should >= expected - perc
-end
-
-shared_examples_for 'mathematical functions' do
-    # XXX Some test for 'compose' ought to be included here.
-    it 'includes the start and end points, within a margin of error' do
-        val_within_range @o, @o.min, @start_value, @one_perc
-        val_within_range @o, @o.max, @end_value, @one_perc
-    end
-end
-
-describe 'Line function' do
-    before(:each) do
-        @start_value = 100
-        @end_value = 300
-        @one_perc = (@end_value - @start_value).abs / 30.0
-        @o = Kamelopard::Functions::Line.interpolate(@start_value, @end_value)
-    end
-
-    it_should_behave_like 'mathematical functions'
-end
-
-describe 'Quadratic function' do
-    before(:each) do
-        @start_value = 100
-        @end_value = 300
-        @mid_value = 20
-        @one_perc = (@end_value - @mid_value).abs / 30.0
-        @o = Kamelopard::Functions::Quadratic.interpolate(@start_value, @end_value, 0.5, @mid_value)
-    end
-
-    it_should_behave_like 'mathematical functions'
-
-    it 'includes the midpoint' do
-        val_within_range @o, 0.5, @mid_value, @one_perc
-    end
-end
-
-describe 'Cubic function' do
-    before(:each) do
-        @start_value = 70
-        @end_value = 15
-        @x1 = 0.3
-        @y1 = 20
-        @x2 = 0.6
-        @y2 = 25
-        @one_perc = (@end_value - @start_value).abs / 30.0
-        @o = Kamelopard::Functions::Cubic.interpolate(@start_value, @end_value, @x1, @y1, @x2, @y2)
-    end
-
-    it_should_behave_like 'mathematical functions'
-
-    it 'includes the defining points' do
-        val_within_range @o, @x1, @y1, @one_perc
-        val_within_range @o, @x2, @y2, @one_perc
-    end
-end
-
-describe 'make_function_path' do
-    pending "use callback and callback_value right"
-    pending "pause when the pause hash key is included"
-    pending "respects show_placemarks"
-    pending "respects no_flyto"
-        # latitude, longitude, altitude, heading, tilt, roll, duration, range
-    pending "handles coordinates correctly"
-    pending "handles altitudeMode and extrude correctly"
-
-# Sample function:
-#make_function_path(10,
-#    :latitude => Line.interpolate(38.8, 40.3),
-#    :altitude => Line.interpolate(10000, 2000),
-#    :heading => Line.interpolate(0, 90),
-#    :tilt => Line.interpolate(40.0, 90),
-#    :roll => 0,
-#    :show_placemarks => 1,
-#    :duration => Quadratic.interpolate(2.0, 4.0, 0.0, 1.0),
-#) do |a, v|
-#    puts "callback here"
-#    if v.has_key? :callback_value then
-#        v[:callback_value] += 1
-#    else
-#        v[:pause] = 0.01
-#        v[:callback_value] = 1
-#    end
-#    puts v[:callback_value]
-#    v
-#end
 end

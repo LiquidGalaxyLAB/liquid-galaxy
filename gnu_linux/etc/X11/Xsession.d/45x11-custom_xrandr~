@@ -1,5 +1,5 @@
 # includes and vars
-if [ -r /home/lg/personavars.txt ]; then . /home/lg/personavars.txt; fi
+if [ -r /lg/personavars.txt ]; then . /lg/personavars.txt; fi
 if [ -n "${DHCP_RANDR}" ]; then RANDR="${DHCP_RANDR}"; else RANDR="right"; fi
 LOGFILE=/tmp/${USER}_xrandr.log
 MYSCREEN=0

@@ -18,9 +18,10 @@
 . ${HOME}/etc/shell.conf
 
 # FRAME_NO is set by personality
-if [[ $FRAME_NO -gt 4 ]] ; then
-    FRAME_NO="$(echo $FRAME_NO - 8 | bc)"
+if [[ ${FRAME_NO} -gt $(( ${LG_FRAMES_MAX}/2 )) ]] ; then
+    FRAME_NO="$(( ${FRAME_NO} - ${LG_FRAMES_MAX} ))"
 fi
+
 
 MASTER="false"
 SLAVE="true"

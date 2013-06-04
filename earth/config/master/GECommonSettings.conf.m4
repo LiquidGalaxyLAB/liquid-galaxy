@@ -1,1 +1,1 @@
-GECommonSettings.conf-6.0.m4
+GECommonSettings.conf-7.1.m4

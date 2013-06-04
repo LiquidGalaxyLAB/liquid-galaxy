@@ -1,14 +1,13 @@
 # encoding: utf-8
-#--
 # vim:ts=4:sw=4:et:smartindent:nowrap
-#++
+
 # Classes to manage various KML objects. See
 # http://code.google.com/apis/kml/documentation/kmlreference.html for a
 # description of KML
 
-# Pretty much everything important is in this module
 module Kamelopard
     require 'singleton'
+    require 'kamelopard/pointlist'
     require 'xml'
     require 'yaml'
     require 'erb'
@@ -17,14 +16,6 @@ module Kamelopard
     @@sequence = 0
     @@id_prefix = ''
     @@logger = nil
-
-    # Valid log levels:
-    # * :debug
-    # * :info
-    # * :notice
-    # * :warn
-    # * :error
-    # * :fatal
     LogLevels = {
         :debug => 0,
         :info => 1,
@@ -38,37 +29,35 @@ module Kamelopard
 
     # Sets a logging callback function. This function should expect three
     # arguments. The first will be a log level (:debug, :info, :notice, :warn,
-    # :error, or :fatal); the second will be a text string, categorizing the
-    # log entries generally; and the third will be the log message itself
+    # :error, or :fatal); the second will be a module, categorizing the log
+    # entries generally; and the third will be the message
     def Kamelopard.set_logger(l)
         @@logger = l
     end
 
-    # Sets the current logging level. Valid levels are defined in the LogLevels hash
     def Kamelopard.set_log_level(lev)
         raise "Unknown log level #{lev}" unless LogLevels.has_key? lev
         @@log_level = LogLevels[lev]
     end
 
-    # Logs a message, provided a log level, a text string, and the log message.
-    # See #Kamelopard.set_logger for details.
     def Kamelopard.log(level, mod, msg)
         raise "Unknown log level #{level} for error message #{msg}" unless LogLevels.has_key? level
         @@logger.call(level, mod, msg) unless @@logger.nil? or @@log_level > LogLevels[level]
     end
 
-    def Kamelopard.get_next_id   # :nodoc:
+    def Kamelopard.get_document
+        DocumentHolder.instance.current_document
+    end
+
+    def Kamelopard.get_next_id   # :nodoc
         @@sequence += 1
         @@sequence
     end
 
-    # Sets a prefix for all kml_id values generated from this time forth. Does
-    # not change previously generated kml_ids
     def Kamelopard.id_prefix=(a)
         @@id_prefix = a
     end
 
-    # Returns the current kml_id prefix value. See #Kamelopard.id_prefix=
     def Kamelopard.id_prefix
         @@id_prefix
     end
@@ -84,7 +73,7 @@ module Kamelopard
     #   * if the second element is a proc, call the proc, passing it the KML
     #     object, and let the Proc (presumably) add itself to the KML
     #++
-    def Kamelopard.kml_array(e, m) # :nodoc:
+    def Kamelopard.kml_array(e, m) # :nodoc
         m.map do |a|
             if ! a[0].nil? then
                 if a[1].kind_of? Proc then
@@ -105,7 +94,7 @@ module Kamelopard
     #--
     # Accepts XdX'X.X", XDXmX.XXs, XdXmX.XXs, or X.XXXX with either +/- or N/E/S/W
     #++
-    def Kamelopard.convert_coord(a)    # :nodoc:
+    def Kamelopard.convert_coord(a)    # :nodoc
         a = a.to_s.upcase.strip.gsub(/\s+/, '')
 
         mult = 1
@@ -147,7 +136,7 @@ module Kamelopard
     end
 
     # Helper function for altitudeMode / gx:altitudeMode elements
-    def Kamelopard.add_altitudeMode(mode, e) # :nodoc:
+    def Kamelopard.add_altitudeMode(mode, e)
         return if mode.nil?
         if mode == :clampToGround or mode == :relativeToGround or mode == :absolute then
             t = XML::Node.new 'altitudeMode'
@@ -191,14 +180,6 @@ module Kamelopard
                     raise "Warning: couldn't find attribute for options hash key #{k}"
                 end
             end
-        end
-
-        def change(attributes, values)
-            change = XML::Node.new 'Change'
-            child = XML::Node.new self.class.name
-            child.attributes[:targetId] = @kml_id
-            change << child
-            return change
         end
 
         # If this is a master-only object, this function gets called internally
@@ -316,8 +297,7 @@ module Kamelopard
         end
 
         def to_s
-            p @extrude
-            "Point (#{@longitude}, #{@latitude}, #{@altitude}, mode = #{@altitudeMode}, #{ @extrude == 1 ? 'extruded' : 'not extruded' })"
+            "Point (#{@longitude}, #{@latitude}, #{@altitude}, mode = #{@altitudeMode}, #{ @extrude ? 'extruded' : 'not extruded' })"
         end
 
         def to_kml(elem = nil, short = false)
@@ -516,7 +496,7 @@ module Kamelopard
                 else
                     a = point
                 end
-                @point = Point.new a.longitude, a.latitude, a.altitude, :altitudeMode => a.altitudeMode, :extrude => a.extrude
+                @point = Point.new a.longitude, a.latitude, a.altitude, :altitudeMode => a.altitudeMode
             end
         end
 
@@ -586,10 +566,6 @@ module Kamelopard
             end
             elem << t unless elem.nil?
             t
-        end
-
-        def to_queries_txt(name = '', planet = 'earth')
-            return "#{planet}@#{name}@flytoview=" + self.to_kml.to_s.gsub(/^\s+/, '').gsub("\n", '')
         end
 
         def [](a)
@@ -975,7 +951,7 @@ module Kamelopard
         end
     end
 
-    def get_stack_trace   # :nodoc:
+    def get_stack_trace   # :nodoc
         k = ''
         caller.each do |a| k << "#{a}\n" end
         k
@@ -1153,11 +1129,6 @@ module Kamelopard
             raise "Cannot add a non-Document object to a DocumentHolder" unless a.kind_of? Document
             @documents << a
             @document_index += 1
-        end
-
-        def set_current(a)
-            raise "Must set current document to an existing Document object" unless a.kind_of? Document
-            @document_index = @documents.index(a)
         end
 
         def [](a)
@@ -1630,7 +1601,7 @@ module Kamelopard
         attr_accessor :standalone
 
         def initialize(options = {})
-            DocumentHolder.instance.current_document.tour << self unless options.has_key?(:standalone)
+            DocumentHolder.instance.current_document.tour << self unless options[:standalone]
             super
         end
     end

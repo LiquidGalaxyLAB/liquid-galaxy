@@ -40,7 +40,7 @@ pre-start script
             sleep ${timeoutsleep}
             continue
         fi
-        if [ -f /home/lg/personavars.txt ] && ( ifconfig -a | grep -qc "\:$( awk -F '=' '/OCTET/ { print $NF }' /home/lg/personavars.txt )" ); then
+        if [ -f /lg/personavars.txt ] && ( ifconfig -a | grep -qc "\:$( awk -F '=' '/OCTET/ { print $NF }' /lg/personavars.txt )" ); then
             logger -p local3.info "race breaker: persona-ok"
             initctl emit --no-wait persona-ok
         else

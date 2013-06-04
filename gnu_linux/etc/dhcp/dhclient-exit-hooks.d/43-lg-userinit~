@@ -1,7 +1,7 @@
 LG_USER=lg
 LG_HOME=/home/${LG_USER}
 LG_BIN=${LG_HOME}/bin
-LG_PERSONA=/home/lg/personavars.txt
+LG_PERSONA=/lg/personavars.txt
 
 echo "$0: $( date ) - user init called" >/tmp/initialize-users.out
 

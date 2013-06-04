@@ -25,11 +25,11 @@
 #include <unistd.h>
 #include <stdio.h>
 //using namespace std;
-
+#include <sys/stat.h>
 void main() {
   const char* filename_from = "/tmp/query_php.txt";
   const char* filename_to   = "/tmp/query.txt";
 
-  chown(  filename_from, 1000,1000   );
+  chown(  filename_from, 1000,1000  );
   rename( filename_from, filename_to );
 }
