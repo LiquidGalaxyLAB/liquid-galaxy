@@ -1,4 +1,0 @@
-# Add this as-is near the end of /etc/sudoers
-# ORDER MATTERS: be sure this "include" is not overridden later
-# 
-#includedir /etc/sudoers.d
