@@ -19,7 +19,7 @@ if (isset($_REQUEST['planet']) and ($_REQUEST['planet'] != '')) {
     fwrite($handle, "planet=" . $_REQUEST['planet']);
     fclose($handle);
   }
-  exec('/home/lg/chown_tmp_query');
+  exec('/lg/chown_tmp_query');
   echo "Going to " . ucwords($_REQUEST['planet']);
 } elseif (isset($_REQUEST['query']) and ($_REQUEST['query'] == 'relaunch')) {
   exec('/usr/bin/sudo -H -u lg /home/lg/bin/lg-sudo-bg service lxdm restart');
@@ -81,7 +81,7 @@ if (isset($_REQUEST['planet']) and ($_REQUEST['planet'] != '')) {
     fwrite($handle, $_REQUEST['query']);
     fclose($handle);
   }
-  exec('/home/lg/chown_tmp_query');
+  exec('/lg/chown_tmp_query');
   echo "Going to " . $_REQUEST['name'];
 } elseif (isset($_REQUEST['layer']) and ($_REQUEST['layer'] != '') and isset($_REQUEST['name']) and ($_REQUEST['name'] != '')) {
 
