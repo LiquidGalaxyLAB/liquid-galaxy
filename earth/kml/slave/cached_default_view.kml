@@ -23,18 +23,18 @@
 	<Placemark id="default_starting_location">
 		<name>LG Start</name>
 		<LookAt>
-			<longitude>-98.41010966842074</longitude>
-			<latitude>41.14743105473733</latitude>
+			<longitude>-35.55152329691384</longitude>
+			<latitude>38.12960165290347</latitude>
 			<altitude>0</altitude>
-			<heading>2.060687323412939</heading>
-			<tilt>78.7358483474068</tilt>
-			<range>1063898.470262828</range>
+			<heading>2.785513547002876e-06</heading>
+			<tilt>0</tilt>
+			<range>17051516.72519975</range>
 			<altitudeMode>relativeToGround</altitudeMode>
 			<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
 		</LookAt>
 		<styleUrl>#sn_m-pushpin</styleUrl>
 		<Point>
-			<coordinates>-98.41010966842074,41.14743105473733,0</coordinates>
+			<coordinates>-35.55152329691383,38.12960165290348,0</coordinates>
 		</Point>
 	</Placemark>
 </Document>
