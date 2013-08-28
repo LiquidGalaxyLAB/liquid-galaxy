@@ -22,30 +22,21 @@ FRAME_NO="$(cat /home/lg/frame)"
 
 echo "MY FRAME = \"${FRAME_NO}\"."
 
-if [[ $FRAME_NO = 0 ]]; then
-    # a kiosk browser-based experience on a second display, 
-    # and the earth.tcl search interface below are mutually exclusive.
-    # -- uncomment the one you like --
-    if [[ "${DISPLAY##*\.}" = "1" ]]; then
-        echo "launching kiosk browser on second screen"
-        sed -i -e 's/exited_cleanly.*/exited_cleanly\":\ true,/' ${HOME}/.config/chromium/Default/Preferences && \
-        rm -f ${HOME}/.config/chromium/Singleton*
-        gnome-www-browser --user-data-dir=${HOME}/.cache/tschromium --disable-session-storage --kiosk --no-first-run localhost:81 &
-        exit
-    fi
 
-    nitrogen --set-zoom-fill ${XDG_PICTURES_DIR}/backgrounds/lg-bg-${FRAME_NO}.png &
+if [[ $FRAME_NO = 0 ]]; then
+
+    #nitrogen --set-zoom-fill ${XDG_PICTURES_DIR}/backgrounds/lg-bg-${FRAME_NO}.png &
     ${SCRIPDIR}/launch-earth.sh &
-    sleep 3
-#    ${HOME}/bin/earth.tcl &
+    ${HOME}/bin/earth.tcl &
 elif [[ $FRAME_NO -ge 1 ]]; then
-    nitrogen --set-zoom-fill ${XDG_PICTURES_DIR}/backgrounds/lg-bg-${FRAME_NO}.png &
+    #nitrogen --set-zoom-fill ${XDG_PICTURES_DIR}/backgrounds/lg-bg-${FRAME_NO}.png &
+echo "Slave: LG$((FRAME_NO+1))"
 else
     # will wait up to 9 seconds in increments of 3
     # to get an IP
     IP_WAIT=0
     
-    nitrogen --set-tiled ${XDG_PICTURES_DIR}/backgrounds/lg-bg-noframe.png &
+    #nitrogen --set-tiled ${XDG_PICTURES_DIR}/backgrounds/lg-bg-noframe.png &
 
     while [[ $IP_WAIT -le 9 ]]; do
         PRIMARY_IP="$(ip addr show dev eth0 primary | awk '/inet\ / { print $2}')"

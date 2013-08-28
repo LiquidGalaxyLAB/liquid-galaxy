@@ -10,3 +10,4 @@ lg          ALL=(LGSCR) NOPASSWD: LAUNCHERS
 www-data ALL=(lg) NOPASSWD: /home/lg/bin/lg-sudo-bg service lightdm restart
 www-data ALL=(lg) NOPASSWD: /home/lg/bin/lg-run-bg
 www-data ALL=(lg) NOPASSWD: /home/lg/bin/mp-control
+#www-data ALL=(lg) NOPASSWD: /home/lg/LG_Benchmarking/Chart-gen/getCharts.sh
