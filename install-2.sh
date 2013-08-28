@@ -5,6 +5,7 @@ if [[ $(/usr/bin/id -u) -ne 0 ]]; then
 fi
 
 chmod 0440 /etc/sudoers.d/42-lg
+chmod 0440 /etc/sudoers.d/44-benchmark
 ln -s /etc/apparmor.d/sbin.dhclient /etc/apparmor.d/disable/
 apparmor_parser -R /etc/apparmor.d/sbin.dhclient
 /etc/init.d/apparmor restart
