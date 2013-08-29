@@ -22,7 +22,7 @@ if (isset($_REQUEST['planet']) and ($_REQUEST['planet'] != '')) {
   exec('/home/lg/chown_tmp_query');
   echo "Going to " . ucwords($_REQUEST['planet']);
 } elseif (isset($_REQUEST['query']) and ($_REQUEST['query'] == 'relaunch')) {
-  exec('/usr/bin/sudo -H -u lg /home/lg/bin/lg-sudo-bg service lxdm restart');
+  exec('/usr/bin/sudo -H -u lg /home/lg/bin/lg-sudo-bg service lightdm restart');
   echo "Attempting relaunch";
 } elseif (isset($_REQUEST['query']) and (preg_match('/^sview(.*)?/', $_REQUEST['query']))) {
   $action = split('-', $_REQUEST['query']);

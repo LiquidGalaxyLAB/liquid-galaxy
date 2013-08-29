@@ -10,3 +10,4 @@ chmod 0600 /etc/ssh/ssh_host_dsa_key
 chmod 0600 /etc/ssh/ssh_host_ecdsa_key
 chmod 0600 /etc/ssh/ssh_host_rsa_key
 
+chown -R lg:lg /home/lg/.ssh
