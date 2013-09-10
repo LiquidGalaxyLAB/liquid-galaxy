@@ -8,12 +8,21 @@
 
     <title>Liquid Galaxy Benchmarking</title>
   </head>
-  <body onload="noneExpand('e_earth', 'e_layers', 'e_moon', 'e_mars', 'e_keyboard');">
+    <nav id="navbar">
+    <ul>
+     <li><a rel="external" href="#" onclick="autoBenchmark();">All Benchmark</a></li>
+     <li><a rel="external" href="#" onclick="launchBenchmark('bcn', '30');">Benchmark</a></li>
+     <li><a rel="external" href="#" onclick="launchBenchmarkTag('bcn', '60', '-s');">Benchmark Long</a></li>
+     <li><a rel="external" href="#" onclick="analize();">Analize</a></li>
+     <li><a rel="external" href="#" onclick="copyData();">Copy Data</a></li>
+     <li><a rel="external" href="#" onclick="getCharts();">Charts</a></li>
+     <li><a rel="external" href="#" onclick="sendQuery('shutdown');">Shutdown</a></li>
+    </ul>
+    </nav>
+
+  <body>
     <div class="touchscreen">
       <div id="status"></div>
-      <div class="relaunch">
-        <div class="location" onclick="changeQuery('relaunch', 'Relaunch');">Test</div>
-      </div>
     </div>
   </body>
 </html>

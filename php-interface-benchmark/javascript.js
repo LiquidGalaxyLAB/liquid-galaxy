@@ -41,7 +41,7 @@ function submitRequest(url) {
   req.onreadystatechange = function() {
     if (req.readyState == 4) {
       if (req.status == 200) {
-        document.getElementById('status').innerHTML = req.responseText;
+	document.getElementById('status').innerHTML = req.responseText;
       }
     }
   }
@@ -49,20 +49,42 @@ function submitRequest(url) {
   req.send(null);
 }
 
-
-function changePlanet(planet) {
-  submitRequest('change.php?planet=' + planet);
+function autoBenchmark() {
+  submitRequest('change.php?autobenchmark');
   showAndHideStatus();
 }
 
-function changeQuery(query, name) {
-  submitRequest('change.php?query=' + query + '&name=' + name);
+function launchBenchmark(tourname,time) {
+  submitRequest('change.php?benchmark=' + tourname + '&time=' + time);
   showAndHideStatus();
 }
 
+function launchBenchmarkTag(tourname,time,tag) {
+  submitRequest('change.php?benchmark=' + tourname + '&time=' + time + '&tag=' + tag);
+  showAndHideStatus();
+}
+
+function analize() {
+  submitRequest('change.php?analize');
+  showAndHideStatus();
+}
+
+function copyData() {
+  submitRequest('change.php?copydata');
+  showAndHideStatus();
+}
+
+function getCharts() {
+  submitRequest('change.php?charts');
+  showAndHideStatus();
+}
+function sendQuery(query) {
+  submitRequest('change.php?query=' + query);
+  showAndHideStatus();
+}
 function showAndHideStatus() {
   var status = document.getElementById('status');
   status.style.opacity = 1;
-  window.setTimeout('document.getElementById("status").style.opacity = 0;', 2000);
+  window.setTimeout('document.getElementById("status").style.opacity = 0;', 5000);
 }
 

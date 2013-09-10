@@ -111,3 +111,33 @@ body {
   -webkit-transform: scale(1.1);
   -webkit-transition-duration: .25s;
 }
+
+nav {
+	display: block;
+	margin-bottom: 10px;
+}
+nav ul {
+	list-style: none;
+	font-size: 20px;
+}
+nav ul li {
+	display: block;
+}
+nav ul li a {
+	display: block;
+	/*float: left;*/
+	padding: 5px 10px;
+	color: #575c7d;
+	text-decoration: none;
+	font-weight: bold;
+}
+nav ul li a:hover {
+	background: #deff90;
+	color: #485e0f;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 5px;
+	padding: 5px 10px;
+	margin: 0;
+	text-decoration: none;
+}

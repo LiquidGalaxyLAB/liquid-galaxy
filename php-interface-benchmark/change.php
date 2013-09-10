@@ -12,15 +12,28 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+if (isset($_REQUEST['benchmark']) and ($_REQUEST['benchmark'] != '') and isset($_REQUEST['time']) and ($_REQUEST['time'] != '')) { 
+  if (isset($_REQUEST['tag']) and ($_REQUEST['tag'] != '')){
+    echo "Benchmark: " . ucwords($_REQUEST['benchmark']) . ", Time: " . ucwords($_REQUEST['time']) . "s, Tag: ". ucwords($_REQUEST['tag']);
+  }else{
+    echo "Benchmark: " . ucwords($_REQUEST['benchmark']) . ", Time: " . ucwords($_REQUEST['time']);
+  }
+}elseif (isset($_REQUEST['autobenchmark'])) { 
+    echo "Starting auto benchmarking";
+    exec('/usr/bin/sudo -H -u lg /home/lg/Benchmarking/Scripts/fullBenchmark.sh');
+}elseif (isset($_REQUEST['analize'])) { 
+    echo "Analizing";
+    exec('/usr/bin/sudo -H -u lg /home/lg/Benchmarking/Scripts/Analize.sh');
+}elseif (isset($_REQUEST['copydata'])) { 
+    echo "Copying Data";
+    exec('/usr/bin/sudo -H -u lg /home/lg/Benchmarking/Scripts/CopyData.sh');
+}elseif (isset($_REQUEST['charts'])) { 
+    echo "Getting Charts";
+    exec('/usr/bin/sudo -H -u lg /home/lg/Benchmarking/Chart-gen/getCharts.sh');
 
-if (isset($_REQUEST['planet']) and ($_REQUEST['planet'] != '')) { 
-  exec('touch /home/lg/zzz111.txt');
-  echo "Going to " . ucwords($_REQUEST['planet']);
-} elseif (isset($_REQUEST['query']) and ($_REQUEST['query'] == 'relaunch')) {
-	exec('/usr/bin/sudo -H -u lg /home/lg/LG_Benchmarking/Chart-gen/getCharts.sh');
-echo "Prueba " . ucwords($_REQUEST['name']);
-} elseif (isset($_REQUEST['query']) and ($_REQUEST['query'] != '') and isset($_REQUEST['name']) and ($_REQUEST['name'] != '')) {
-  exec('touch /home/lg/zzz333.txt');
-  echo "Going to " . $_REQUEST['name'];
+
+}elseif (isset($_REQUEST['query']) and ($_REQUEST['query'] == 'shutdown')) {
+    echo "Shutting Down";
+    exec('/usr/bin/sudo -H -u lg /home/lg/bin/lg-sudo \'shutdown -h 0\'');
 }
 ?>
