@@ -20,20 +20,18 @@ if (isset($_REQUEST['benchmark']) and ($_REQUEST['benchmark'] != '') and isset($
   }
 }elseif (isset($_REQUEST['autobenchmark'])) { 
     echo "Starting auto benchmarking";
-    exec('/usr/bin/sudo -H -u lg /home/lg/Benchmarking/Scripts/fullBenchmark.sh');
+    exec('/usr/bin/sudo -H -u lg /home/lg/LG_Benchmarking/Scripts/fullBenchmark.sh');
 }elseif (isset($_REQUEST['analize'])) { 
     echo "Analizing";
-    exec('/usr/bin/sudo -H -u lg /home/lg/Benchmarking/Scripts/Analize.sh');
+    exec('/usr/bin/sudo -H -u lg /home/lg/LG_Benchmarking/Scripts/Analize.sh');
 }elseif (isset($_REQUEST['copydata'])) { 
     echo "Copying Data";
-    exec('/usr/bin/sudo -H -u lg /home/lg/Benchmarking/Scripts/CopyData.sh');
+    exec('/usr/bin/sudo -H -u lg /home/lg/LG_Benchmarking/Scripts/CopyData.sh');
 }elseif (isset($_REQUEST['charts'])) { 
     echo "Getting Charts";
-    exec('/usr/bin/sudo -H -u lg /home/lg/Benchmarking/Chart-gen/getCharts.sh');
-
-
+    exec('/usr/bin/sudo -H -u lg /home/lg/LG_Benchmarking/Chart-gen/getCharts.sh');
 }elseif (isset($_REQUEST['query']) and ($_REQUEST['query'] == 'shutdown')) {
     echo "Shutting Down";
-    exec('/usr/bin/sudo -H -u lg /home/lg/bin/lg-sudo \'shutdown -h 0\'');
+    exec('/usr/bin/sudo -H -u lg /home/lg/LG_bin/lg-sudo \'shutdown -h 0\'');
 }
 ?>
