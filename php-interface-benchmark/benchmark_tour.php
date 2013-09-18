@@ -1,7 +1,9 @@
 <!DOCTYPE HTML>
 <html lang = "en">
   <head>
-    <title>Single Tour Benchmarking</title>
+    <link rel="stylesheet" type="text/css" href="benchmark_tour.css" />
+    <script type="text/javascript" src="javascript.js"></script>
+    <title>Single Benchmark</title>
     <meta charset = "UTF-8" />
 <?php
 
@@ -14,9 +16,9 @@ if ($_POST['submit']) {
  if (!empty($tag)) {
 	$body = "$body -$tag";
 }
-echo "Starting benchmarking on $tourname\n" ;
-exec('/usr/bin/sudo -H -u lg /home/lg/LG_Benchmarking/Scripts/Benchmark.sh bcn 0');
-echo "\nDone benchmarking on $tourname" ;
+#echo "Starting benchmarking on $tourname\n" ;
+exec("/usr/bin/sudo -H -u lg /home/lg/LG_Benchmarking/Scripts/Benchmark.sh $body");
+#echo "\nDone benchmarking on $tourname" ;
 }
 ?>
 
@@ -25,7 +27,7 @@ echo "\nDone benchmarking on $tourname" ;
     <h1>Single Tour Benchmarking</h1>
     <form method="post" action="benchmark_tour.php">
        <fieldset>
-          <legend>Selecting elements</legend>
+<h4>Select a tour name, a time interval between POI's jumps and an optional Tag to perform a benchmark.</h4>
           <p>
              <label>Tour Name</label>
              <select name = "tourname">
@@ -47,12 +49,18 @@ echo "\nDone benchmarking on $tourname" ;
              </select>
           </p>
         <p>
-	 <input id="submit" name="submit" type="submit" value="Submit">
+	 <input id="submit" name="submit" type="submit" value="Start">
         </p>     
+<h4>Make sure to wait for the benchmark to finish before performing another one.</h4>
+<h4>Please, clear the cache after each tour</h4>
        </fieldset>
     </form>
     <div class="touchscreen">
       <div id="status"></div>
     </div>
+	<p>
+		<a class="tools" href="tools.php">Clear cache</a><p></p>
+		<a class="tools" id="back" href="benchmarking.php">Go Back</a>
+	</p>
   </body>
 </html>

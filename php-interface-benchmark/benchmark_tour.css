@@ -1,0 +1,53 @@
+
+fieldset{
+	display: inline-block;
+	background-color: #fafafa;
+}
+
+label {
+	margin:10px;
+}
+
+select {
+	cursor:pointer;cursor:hand;
+	font-size:15px;
+	padding:5px;
+}
+
+
+#submit{
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 5px;
+	font-size:20px;
+	background-color:#eeeeee
+}
+#submit:hover{
+	cursor:pointer;cursor:hand;
+	background-color:#dddddd
+}
+
+.tools {
+	display: inline-block;
+	padding: 5px 10px;
+	color: #575c7d;
+	text-decoration: none;
+	font-weight: bold;
+	font-size:25px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 5px;
+	border-style:solid;
+	border-color:#ffffff;
+}
+.tools:hover {
+	background: #deff90;
+	color: #485e0f;
+}
+
+#back:hover {
+	background-color: #ffff90;
+	color: #485e0f;
+	border-color:#6a7f2f;
+}
+

@@ -64,6 +64,11 @@ function launchBenchmarkTag(tourname,time,tag) {
   showAndHideStatus();
 }
 
+function clearCache() {
+  submitRequest('change.php?clear');
+  showAndHideStatus();
+}
+
 function analize() {
   submitRequest('change.php?analize');
   showAndHideStatus();
