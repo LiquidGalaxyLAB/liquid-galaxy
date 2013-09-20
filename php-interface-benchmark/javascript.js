@@ -13,7 +13,39 @@
  * limitations under the License.
  */
 
+/*
+ * @fileoverview Handles AJAX requests and display restrictions for the 
+ * Liquid Galaxy touchscreen that is run via a webserver.
+ */
 
+// To prevent users from causing right menu windows showing up
+// we disable the ability to right click using the example
+// code provided by Reconn.us at the following URL
+//  http://www.reconn.us/content/view/36/45/
+var isNS = (navigator.appName == 'Netscape') ? 1 : 0;
+if (navigator.appName == 'Netscape') {
+  document.captureEvents(Event.MOUSEDOWN || Event.MOUSEUP);
+}
+
+function mischandler() {
+  return false;
+}
+
+function mousehandler(e) {
+  var myevent = (isNS) ? e : event;
+  var eventbutton = (isNS) ? myevent.which : myevent.button;
+  if ((eventbutton == 2) || (eventbutton == 3)) return false;
+}
+
+document.oncontextmenu = mischandler;
+document.onmousedown = mousehandler;
+document.onmouseup = mousehandler;
+
+// To prevent users from causing images to start moving
+// around as they're trying to interact with the touchscreen
+// we disable image dragging using the example code provided
+// by Redips at the following URL
+// http://www.redips.net/firefox/disable-image-dragging/
 window.onload = function (e) {
   var evt = e || window.event;
   var imgs;
@@ -41,7 +73,7 @@ function submitRequest(url) {
   req.onreadystatechange = function() {
     if (req.readyState == 4) {
       if (req.status == 200) {
-	document.getElementById('status').innerHTML = req.responseText;
+        document.getElementById('status').innerHTML = req.responseText;
       }
     }
   }
@@ -49,47 +81,98 @@ function submitRequest(url) {
   req.send(null);
 }
 
-function autoBenchmark() {
-  submitRequest('change.php?autobenchmark');
+function xchangePlanet(planet) {
+    return;
+}
+
+function changePlanet(planet) {
+  submitRequest('change.php?planet=' + planet);
   showAndHideStatus();
 }
 
-function launchBenchmark(tourname,time) {
-  submitRequest('change.php?benchmark=' + tourname + '&time=' + time);
+function changeQuery(query, name) {
+  submitRequest('change.php?query=' + query + '&name=' + name);
   showAndHideStatus();
 }
 
-function launchBenchmarkTag(tourname,time,tag) {
-  submitRequest('change.php?benchmark=' + tourname + '&time=' + time + '&tag=' + tag);
+function changeLayer(layer, name) {
+  submitRequest('change.php?layer=' + layer + '&name=' + name);
   showAndHideStatus();
 }
 
-function clearCache() {
-  submitRequest('change.php?clear');
+function syncKml(action, url) {
+  submitRequest('sync_touchscreen.php?touch_action=' + action + '&touch_kml=' + url);
   showAndHideStatus();
 }
 
-function analize() {
-  submitRequest('change.php?analize');
+function toggleKml(obj, url) {
+  if (obj.className == 'kml_off') {
+    submitRequest('sync_touchscreen.php?touch_action=add&touch_kml=' + url);
+    obj.className='kml_on';
+  }
+  else if (obj.className == 'kml_on') {
+    
+    submitRequest('sync_touchscreen.php?touch_action=delete&touch_kml=' + url);
+    obj.className='kml_off';
+  }
   showAndHideStatus();
 }
 
-function copyData() {
-  submitRequest('change.php?copydata');
-  showAndHideStatus();
-}
-
-function getCharts() {
-  submitRequest('change.php?charts');
-  showAndHideStatus();
-}
-function sendQuery(query) {
-  submitRequest('change.php?query=' + query);
-  showAndHideStatus();
-}
 function showAndHideStatus() {
   var status = document.getElementById('status');
   status.style.opacity = 1;
-  window.setTimeout('document.getElementById("status").style.opacity = 0;', 5000);
+  window.setTimeout('document.getElementById("status").style.opacity = 0;', 2000);
 }
 
+function setCaret() {
+  var keyboardEntry = document.getElementById('keyboardEntry');
+  keyboardEntry.focus();
+}
+
+function keyEntry(key) {
+  var keyboardEntry = document.getElementById('keyboardEntry');
+  keyboardEntry.value = keyboardEntry.value + key;
+  setCaret();
+}
+
+function backspaceKey() {
+  var keyboardEntry = document.getElementById('keyboardEntry');
+  keyboardEntry.value =
+    keyboardEntry.value.substr(0, keyboardEntry.value.length - 1);
+  setCaret();
+}
+
+function clearKey() {
+  var keyboardEntry = document.getElementById('keyboardEntry');
+  keyboardEntry.value = '';
+  setCaret();
+}
+
+function searchKey() {
+  var keyboardEntry = document.getElementById('keyboardEntry');
+  changeQuery('search=' + keyboardEntry.value, keyboardEntry.value);
+  setCaret();
+}
+
+//Added by Sean (alchemist@google.com) to make keyboard enter key work to submit
+function enterKeySubmit(e) {
+  if(e && e.keyCode == 13)
+  {
+      searchKey();    
+  }
+}
+
+function toggleExpand(on_obj, off_obj1, off_obj2, off_obj3, off_obj4){
+  document.getElementById(on_obj).className='expand_active';
+  document.getElementById(off_obj1).className='expand_inactive';
+  document.getElementById(off_obj2).className='expand_inactive';
+  document.getElementById(off_obj3).className='expand_inactive';
+  document.getElementById(off_obj4).className='expand_inactive';
+}
+function noneExpand(off_obj, off_obj1, off_obj2, off_obj3, off_obj4){
+  document.getElementById(off_obj).className='expand_inactive';
+  document.getElementById(off_obj1).className='expand_inactive';
+  document.getElementById(off_obj2).className='expand_inactive';
+  document.getElementById(off_obj3).className='expand_inactive';
+  document.getElementById(off_obj4).className='expand_inactive';
+}

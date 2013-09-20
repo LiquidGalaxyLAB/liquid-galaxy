@@ -5,48 +5,40 @@
     <script type="text/javascript" src="javascript.js"></script>
     <title>Single Benchmark</title>
     <meta charset = "UTF-8" />
-<?php
 
-    $tourname = $_POST['tourname'];
-    $time = $_POST['time'];
-    $tag = $_POST['tag'];
-    $body = "$tourname $time";
-
-if ($_POST['submit']) {
- if (!empty($tag)) {
-	$body = "$body -$tag";
-}
-#echo "Starting benchmarking on $tourname\n" ;
-exec("/usr/bin/sudo -H -u lg /home/lg/LG_Benchmarking/Scripts/Benchmark.sh $body");
-#echo "\nDone benchmarking on $tourname" ;
-}
-?>
 
   </head>
   <body>
     <h1>Single Tour Benchmarking</h1>
-    <form method="post" action="benchmark_tour.php">
+    <form method="post" action="benchmark_tour.php" onsubmit="parseTest();return false;">
        <fieldset>
 <h4>Select a tour name, a time interval between POI's jumps and an optional Tag to perform a benchmark.</h4>
           <p>
              <label>Tour Name</label>
-             <select name = "tourname">
+             <select id="tourname" name = "tourname">
                <option value = "bcn">Barcelona</option>
                <option value = "Horsens">Horsens</option>
-               <option value = "Desert">Desert</option>
+               <option value = "desierto">Desert</option>
              </select>
 
              <label>Timing</label>
-             <select name = "time">
-               <option value = "30">30s</option>
-               <option value = "60">60s</option>
+             <select id="time" name = "time">
+               <option value = "1">30s</option>
+               <option value = "1">60s</option>
              </select>
 
              <label>Tag</label>
-             <select name = "tag">
+             <select id="tag" name = "tag">
                <option value = ""></option>
                <option value = "s">s</option>
              </select>
+	</p>
+	<p>
+          <label>Text Area</label>
+          <textarea id = "myTextArea"
+                  rows = "30"
+                  cols = "80">Your text here</textarea>
+        
           </p>
         <p>
 	 <input id="submit" name="submit" type="submit" value="Start">
@@ -59,7 +51,9 @@ exec("/usr/bin/sudo -H -u lg /home/lg/LG_Benchmarking/Scripts/Benchmark.sh $body
       <div id="status"></div>
     </div>
 	<p>
-		<a class="tools" href="tools.php">Clear cache</a><p></p>
+		<a class="tools" href="#" onClick="clearCache()">Clear cache</a>
+	</p>
+	<p>
 		<a class="tools" id="back" href="benchmarking.php">Go Back</a>
 	</p>
   </body>

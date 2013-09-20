@@ -1,4 +1,19 @@
-
+body > *{
+	font-family:sans-serif;
+}
+#status {
+  background-color: yellow;
+  color: black;
+  left: 35%;
+  margin: -40 auto;
+  opacity: 0;
+  position: absolute;
+  text-align: center;
+  width: 30%;
+  z-index: 3;
+  -webkit-border-radius: 5px;
+  -webkit-transition: opacity .5s linear .5s;
+}
 fieldset{
 	display: inline-block;
 	background-color: #fafafa;
@@ -50,4 +65,5 @@ select {
 	color: #485e0f;
 	border-color:#6a7f2f;
 }
+
 
