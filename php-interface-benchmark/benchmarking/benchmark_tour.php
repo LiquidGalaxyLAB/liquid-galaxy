@@ -23,8 +23,8 @@
 
              <label>Timing</label>
              <select id="time" name = "time">
-               <option value = "1">30s</option>
-               <option value = "1">60s</option>
+               <option value = "30">30s</option>
+               <option value = "60">60s</option>
              </select>
 
              <label>Tag</label>
@@ -34,14 +34,15 @@
              </select>
 	</p>
 	<p>
-          <label>Text Area</label>
+          <label>Output</label>
           <textarea id = "myTextArea"
-                  rows = "30"
+                  rows = "1"
                   cols = "80">Your text here</textarea>
         
           </p>
         <p>
 	 <input id="submit" name="submit" type="submit" value="Start">
+	<input id="showbtn" name="showbtn" type="button" value="Show output" onClick="toggleShow()">
         </p>     
 <h4>Make sure to wait for the benchmark to finish before performing another one.</h4>
 <h4>Please, clear the cache after each tour</h4>
@@ -52,6 +53,7 @@
     </div>
 	<p>
 		<a class="tools" href="#" onClick="clearCache()">Clear cache</a>
+<a class="tools" href="#" onClick="stopAll()" >Stop Benchmarking</a>
 	</p>
 	<p>
 		<a class="tools" id="back" href="benchmarking.php">Go Back</a>

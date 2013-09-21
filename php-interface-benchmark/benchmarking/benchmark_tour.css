@@ -30,18 +30,21 @@ select {
 }
 
 
-#submit{
+#submit, #showbtn{
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 5px;
 	font-size:20px;
 	background-color:#eeeeee
 }
-#submit:hover{
+#submit:hover, #showbtn:hover{
 	cursor:pointer;cursor:hand;
 	background-color:#dddddd
 }
 
+#showbtn{
+	float:right
+}
 .tools {
 	display: inline-block;
 	padding: 5px 10px;

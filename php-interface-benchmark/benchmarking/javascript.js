@@ -105,9 +105,11 @@ function showAndHideStatus() {
   var status = document.getElementById('status');
   status.style.opacity = 1;
   window.setTimeout('document.getElementById("status").style.opacity = 0;', 5000);
-
 }
-
+function stopAll() {
+  submitRequest('change.php?stop');
+  showAndHideStatus();
+}
 
 function parseTest() {
 
@@ -119,10 +121,27 @@ function parseTest() {
  var inp_2 = elem_2.value;
  var inp_3 = elem_3.value;
 
-if (inp_3 == ""){
+ if (inp_3 == ""){
 	launchBenchmark(inp_1,inp_2);
-}else{
+ }else{
 	launchBenchmarkTag(inp_1,inp_2,inp_3);
-}
+ }
 }
 
+
+var show = false;
+function toggleShow() {
+    var t = document.getElementById("myTextArea");
+	var size1 = 30;
+	var size2 = 1;
+    var b = document.getElementById("showbtn");
+    show = !show;
+    if (show) {
+        b.value = "Hide Output";
+	t.rows=size1;
+    }
+    else {
+        b.value = "Show Output";
+	t.rows=size2;
+    }
+}

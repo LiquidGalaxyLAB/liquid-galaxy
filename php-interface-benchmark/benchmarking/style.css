@@ -1,11 +1,9 @@
 body {
   color: black;
   margin: 0;
-  overflow: hidden;
   -webkit-user-select: none;
   -moz-user-select: none;
-	font-family:sans-serif;
-
+  font-family:sans-serif;
 }
 
 #status {

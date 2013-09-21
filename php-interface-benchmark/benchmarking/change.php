@@ -22,8 +22,7 @@ if (isset($_REQUEST['benchmark']) and ($_REQUEST['benchmark'] != '') and isset($
     		$var1 = $var1 . ", Tag: ". $_REQUEST['tag'];
 		$var2 = $var2 . " -" . $_REQUEST['tag'];
 	}
-$result="asd";
-	exec("/usr/bin/sudo -H -u lg /home/lg/LG_Benchmarking/Scripts/Benchmark.sh $var2");
+$result= shell_exec("/usr/bin/sudo -H -u lg /home/lg/LG_Benchmarking/Scripts/Benchmark.sh $var2");
 	echo "$var1$var_Break$result"; 
 }elseif (isset($_REQUEST['autobenchmark'])) { 
     echo "Starting auto benchmarking";
@@ -49,6 +48,9 @@ $result="asd";
 }elseif (isset($_REQUEST['query']) and ($_REQUEST['query'] == 'shutdown')) {
     echo "Shutting Down";
     exec('/usr/bin/sudo -H -u lg /home/lg/bin/lg-sudo \'shutdown -h 0\'');
+}elseif (isset($_REQUEST['stop'])) {
+    echo "Stopping Benchmarking";
+    exec('/usr/bin/sudo -H -u lg /home/lg/LG_Benchmarking/Scripts/stopAll.sh');
 }
 
 
