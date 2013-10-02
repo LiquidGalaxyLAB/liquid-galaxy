@@ -1,8 +1,0 @@
-# Scripts
-www-data ALL=(lg) NOPASSWD: /home/lg/Benchmarking/Chart-gen/getCharts.sh
-www-data ALL=(lg) NOPASSWD: /home/lg/Benchmarking/Scripts/Analize.sh
-www-data ALL=(lg) NOPASSWD: /home/lg/Benchmarking/Scripts/CopyData.sh
-www-data ALL=(lg) NOPASSWD: /home/lg/Benchmarking/Scripts/Benchmark.sh
-www-data ALL=(lg) NOPASSWD: /home/lg/Benchmarking/Scripts/fullBenchmark.sh
-www-data ALL=(lg) NOPASSWD: /home/lg/Benchmarking/Scripts/stopAll.sh
-
