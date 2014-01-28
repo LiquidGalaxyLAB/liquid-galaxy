@@ -11,4 +11,5 @@ apparmor_parser -R /etc/apparmor.d/sbin.dhclient
 /etc/init.d/apparmor restart
 chown -R lg:lg /home/lg/
 chown lg:lg /home/lg/earth/builds/latest/drivers.ini
+chmod +s /home/lg/chown_tmp_query
 
