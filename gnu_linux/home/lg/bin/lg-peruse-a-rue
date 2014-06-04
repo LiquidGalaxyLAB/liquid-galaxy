@@ -1,0 +1,46 @@
+#!/bin/bash
+# Copyright 2010 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+. ${HOME}/etc/shell.conf
+
+[ -z "${LG_FRAMES}" ] && echo "LG_FRAMES is empty" && exit 1
+
+lg-ctl-master
+
+#GEScriptPID=$(pgrep run-earth-bin)
+ssh -tt -x lg@lg1 "killall -q node; liquid-galaxy.lg-peruse-a-rue/bin/peruse-a-rue" &
+lg-run "killall -q run-earth-bin.sh; killall -q chromium-browser; killall -q googleearth-bin"
+
+for lg in $LG_FRAMES ; do
+	frame=$(($(echo $lg | cut -c 3)-1))
+
+	if [[ ${frame} -gt $(( ${LG_FRAMES_MAX}/2 )) ]] ; then
+	    frame="$(( ${frame} - ${LG_FRAMES_MAX} ))"
+	fi
+
+	CMD0="export DISPLAY=:0 && chromium-browser lg1:8086/display/?"
+	if [[ $frame -eq 0 ]]
+	then
+		CMD=$CMD0"master=true"
+	else
+
+		CMD=$CMD0"yawoffset=$frame"
+	fi
+
+ssh -x lg@$lg "$CMD" &
+
+done
+
+exit 0
