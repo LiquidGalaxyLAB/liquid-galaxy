@@ -13,17 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 $var_Break="[BRK]";
-if (isset($_REQUEST['benchmark']) and ($_REQUEST['benchmark'] != '') and isset($_REQUEST['time']) and ($_REQUEST['time'] != '')) { 
-	$var1 = "Benchmark: " . $_REQUEST['benchmark'] . ", Time: " . $_REQUEST['time'] . "s";
-	$var2 = $_REQUEST['benchmark'] . " " . $_REQUEST['time'];
-	if (isset($_REQUEST['tag']) and ($_REQUEST['tag'] != '')){
-    		$var1 = $var1 . ", Tag: ". $_REQUEST['tag'];
-		$var2 = $var2 . " -" . $_REQUEST['tag'];
-	}
-$result= shell_exec("/usr/bin/sudo -H -u lg /home/lg/LG_Benchmarking/Scripts/Benchmark.sh $var2");
+if (isset($_REQUEST['initPeruse']) and ($_REQUEST['initPeruse'] != '') and isset($_REQUEST['port']) and ($_REQUEST['port'] != '')) { 
+        $var1 = "Connecting to: " . $_REQUEST['initPeruse'] . ":" . $_REQUEST['port'];
+        $var2 = $_REQUEST['initPeruse'] . " " . $_REQUEST['port'];
+
+        echo "$var1"; 
+	shell_exec("/usr/bin/sudo -H -u lg /home/lg/bin/lg-peruse-a-rue $var2");
+}elseif (isset($_REQUEST['connCtrl'])) { 
+	echo "Controller Connected";
+}elseif (isset($_REQUEST['startPeruseTour'])) { 
+	$var1= "Starting Peruse-a-rue Benchmark";
+	$result= shell_exec('/usr/bin/sudo -H -u lg /home/lg/LG_Web-Benchmarking/Benchmark/Monitor/Benchmark.sh ' . $_REQUEST['startPeruseTour']);
 	echo "$var1$var_Break$result"; 
+}elseif (isset($_REQUEST['fps'])) { 
+	echo "Switched ON/OFF FPS";
+}elseif (isset($_REQUEST['getlog'])) {
+        echo "Log retrieved";
 }elseif (isset($_REQUEST['autobenchmark'])) { 
     echo "Starting auto benchmarking";
     exec('/usr/bin/sudo -H -u lg /home/lg/LG_Benchmarking/Scripts/fullBenchmark.sh');
@@ -52,7 +58,6 @@ $result= shell_exec("/usr/bin/sudo -H -u lg /home/lg/LG_Benchmarking/Scripts/Ben
     echo "Stopping Benchmarking";
     exec('/usr/bin/sudo -H -u lg /home/lg/LG_Benchmarking/Scripts/stopAll.sh');
 }
-
 
 
 ?>

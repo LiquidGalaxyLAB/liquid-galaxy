@@ -48,52 +48,58 @@ function submitRequest(url) {
   req.open('GET', url, true);
   req.send(null);
 }
+
 function submitRequest_output(url) {
   var req = createRequest();
   req.onreadystatechange = function() {
     if (req.readyState == 4) {
       if (req.status == 200) {
-data = req.responseText.split ( "[BRK]" );
-document.getElementById("status").innerHTML = data[0];
-document.getElementById("myTextArea").innerHTML = data[1];
+	data = req.responseText.split ( "[BRK]" );
+	document.getElementById("status").innerHTML = data[0];
+	document.getElementById("myTextArea").innerHTML = data[1];
       }
     }
   }
   req.open('GET', url, true);
   req.send(null);
 }
-function autoBenchmark() {
-  submitRequest('change.php?autobenchmark');
+
+var show = false;
+function toggleShow() {
+    var t = document.getElementById("myTextArea");
+	var size1 = 30;
+	var size2 = 1;
+    var b = document.getElementById("showbtn");
+    show = !show;
+    if (show) {
+        b.value = "Hide Output";
+	t.rows=size1;
+    }
+    else {
+        b.value = "Show Output";
+	t.rows=size2;
+    }
+}
+
+function initPeruse() {
+  var myIp = document.getElementById('myIP').value;
+  var myPort = document.getElementById('myPORT').value;
+  submitRequest('change.php?initPeruse=' + myIp + '&port=' + myPort);
   showAndHideStatus();
 }
 
-function launchBenchmark(tourname,time) {
-  submitRequest_output('change.php?benchmark=' + tourname + '&time=' + time);
+function switchFPS() {
+  submitRequest('change.php?fps');
   showAndHideStatus();
 }
 
-function launchBenchmarkTag(tourname,time,tag) {
-  submitRequest_output('change.php?benchmark=' + tourname + '&time=' + time + '&tag=' + tag);
+function getLog() {
+  submitRequest('change.php?getlog');
   showAndHideStatus();
 }
 
 function clearCache() {
   submitRequest('change.php?clear');
-  showAndHideStatus();
-}
-
-function analize() {
-  submitRequest('change.php?analize');
-  showAndHideStatus();
-}
-
-function copyData() {
-  submitRequest('change.php?copydata');
-  showAndHideStatus();
-}
-
-function getCharts() {
-  submitRequest('change.php?charts');
   showAndHideStatus();
 }
 
@@ -111,37 +117,64 @@ function stopAll() {
   showAndHideStatus();
 }
 
-function parseTest() {
+var socket;
+function connectController(){
+	var myCIP = document.getElementById('myIP').value;
+	var myCPORT = document.getElementById('myCPORT').value;
 
- var elem_1 = document.getElementById('tourname');
- var elem_2 = document.getElementById('time');
- var elem_3 = document.getElementById('tag');
+	loadJS('http://' + myCIP +':'+ myCPORT +'/socket.io/socket.io.js', function() { 
+	   socket = io.connect('http:\\' + myCIP  +':'+ myCPORT);
+	    
+	    socket.on('connect', function(){
+		console.log('FPS Controller module connected');
+		submitRequest('change.php?connCtrl');
+		showAndHideStatus();
+	    });
 
- var inp_1 = elem_1.value;
- var inp_2 = elem_2.value;
- var inp_3 = elem_3.value;
+	    socket.on('message', function(data){ 
+		console.log('MSG: ' + data.message);
+	    });
 
- if (inp_3 == ""){
-	launchBenchmark(inp_1,inp_2);
- }else{
-	launchBenchmarkTag(inp_1,inp_2,inp_3);
- }
+	    socket.on('disconnect', function(){
+		console.log('disconected');
+	    });
+
+	    socket.on('fpsSwitch', function(){
+		console.log('FPS Switching');
+	    });
+
+	    socket.on('giveLOG', function(){
+		console.log('Downloading LOG');
+	    });
+	}); 
+
+}
+
+function emitDownloadLog() {
+	socket.emit('getLOG');
+}
+
+function emitLogONOFF() {
+	socket.emit('logONOFF');
+}
+
+function loadJS(src, callback) {
+    var s = document.createElement('script');
+    s.src = src;
+    s.async = true;
+    s.onreadystatechange = s.onload = function() {
+        var state = s.readyState;
+        if (!callback.done && (!state || /loaded|complete/.test(state))) {
+            callback.done = true;
+            callback();
+        }
+    };
+    document.getElementsByTagName('head')[0].appendChild(s);
 }
 
 
-var show = false;
-function toggleShow() {
-    var t = document.getElementById("myTextArea");
-	var size1 = 30;
-	var size2 = 1;
-    var b = document.getElementById("showbtn");
-    show = !show;
-    if (show) {
-        b.value = "Hide Output";
-	t.rows=size1;
-    }
-    else {
-        b.value = "Show Output";
-	t.rows=size2;
-    }
+function startTour(){
+  var tag="feo";
+  submitRequest_output('change.php?startPeruseTour=' + tag);
+  showAndHideStatus();
 }
