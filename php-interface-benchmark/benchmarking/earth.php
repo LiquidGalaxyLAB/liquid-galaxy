@@ -11,11 +11,9 @@
     <nav>
     <ul>
     <h1>Liquid Galaxy Benchmarking</h1>
-     <li><a href="peruse.php">Peruse-a-rue Benchmarking</a></li>
-     <li><a href="earth.php">Google Earth Benchmarking</a></li>
-     <li><a href="tools.php">Tools</a></li>
+	<li><a rel="external" href="https://github.com/asherat/LG_Benchmarking/wiki">LG_Benchmarking Wiki</a></li>
 
-	<li><a id="back" href="../index.php">Liquid Galaxy Menu</a></li>
+	<li><a id="back" href="index.php">Go Back</a></li>
     </ul>
     </nav>
 

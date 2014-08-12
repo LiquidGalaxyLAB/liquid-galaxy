@@ -120,10 +120,10 @@ function stopAll() {
 var socket;
 function connectController(){
 	var myCIP = document.getElementById('myIP').value;
-	var myCPORT = document.getElementById('myCPORT').value;
+	var myPORT = document.getElementById('myPORT').value;
 
-	loadJS('http://' + myCIP +':'+ myCPORT +'/socket.io/socket.io.js', function() { 
-	   socket = io.connect('http:\\' + myCIP  +':'+ myCPORT);
+	loadJS('http://' + myCIP +':'+ myPORT +'/socket.io/socket.io.js', function() { 
+	   socket = io.connect('http://192.168.10.120:8086/fps');
 	    
 	    socket.on('connect', function(){
 		console.log('FPS Controller module connected');

@@ -14,11 +14,9 @@
 			<li>
 				<h5>Please, fill in the IP and Ports before Initializing Peruse-a-rue or Connecting the Controller</h5>
 				<label for="myIP"> IP </label>
-				<input type="text"  id = "myIP" value="lg1">
+				<input type="text"  id = "myIP" value="192.168.10.120">
 				<label for="myPORT"> Port </label>
 				<input type="text"  id = "myPORT" value="8086">
-				<label for="myCPORT"> Controller Port </label>
-				<input type="text"  id = "myCPORT" value="8087">
 			</li>
 			<li><a href="#" onclick="initPeruse();">Initialize Peruse-a-rue </a></li>
 			<li><a href="#" onclick="connectController();">Connect Controller </a></li>
@@ -36,7 +34,7 @@
         <p>
 	<input id="showbtn" name="showbtn" type="button" value="Show output" onClick="toggleShow()">
         </p>     
-
+<li><a rel="external" href="https://github.com/asherat/LG_Web-Benchmarking/wiki">LG_Web-Benchmarking Wiki</a></li>
 			<li><a id="back" href="index.php">Go Back</a></li>
 		</ul>
 	</nav>
