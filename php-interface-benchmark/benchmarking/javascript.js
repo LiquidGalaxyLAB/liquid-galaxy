@@ -60,9 +60,11 @@ function submitRequest_output(url) {
       }
     }
   }
-  req.open('GET', url, true);
+  req.open('GET', url, false);
   req.send(null);
 }
+
+
 
 var show = false;
 function toggleShow() {
@@ -123,11 +125,11 @@ function connectController(){
 	var myPORT = document.getElementById('myPORT').value;
 
 	loadJS('http://' + myCIP +':'+ myPORT +'/socket.io/socket.io.js', function() { 
-	   socket = io.connect('http://192.168.10.120:8086/fps');
+	   socket = io.connect('http://' + myCIP +':'+ myPORT+'/fps');
 	    
 	    socket.on('connect', function(){
 		console.log('FPS Controller module connected');
-		submitRequest('change.php?connCtrl');
+		document.getElementById("status").innerHTML = "Controller Connected";
 		showAndHideStatus();
 	    });
 
@@ -139,19 +141,23 @@ function connectController(){
 		console.log('disconected');
 	    });
 
-	    socket.on('fpsSwitch', function(){
-		console.log('FPS Switching');
+	    socket.on('fpsSwitch', function(data){
+		console.log(data.message);
+		document.getElementById("status").innerHTML = data.message;
+		showAndHideStatus();
 	    });
 
-	    socket.on('giveLOG', function(){
-		console.log('Downloading LOG');
+	    socket.on('giveLOG', function(data){
+		console.log(data.message);
+		document.getElementById("status").innerHTML = data.message;
+		showAndHideStatus();
 	    });
 	}); 
 
 }
 
 function emitDownloadLog() {
-	socket.emit('getLOG');
+	socket.emit('getLOG',{message:document.getElementById("myTag").value});
 }
 
 function emitLogONOFF() {
@@ -172,9 +178,38 @@ function loadJS(src, callback) {
     document.getElementsByTagName('head')[0].appendChild(s);
 }
 
-
 function startTour(){
-  var tag="feo";
-  submitRequest_output('change.php?startPeruseTour=' + tag);
+  var tag= document.getElementById("myTag").value;
+	var myIP = document.getElementById('myIP').value;
+	var myPORT = document.getElementById('myPORT').value;
+	var myTime = document.getElementById('myTime').value;
+	emitLogONOFF();
+	submitRequest_output('change.php?startPeruseTour=' + tag + '&ip=' + myIP + '&port=' +myPORT + '&time=' +myTime);
+	showAndHideStatus();
+	emitLogONOFF();
+	emitDownloadLog();
+}
+
+function OpenInNewTab() {
+  var myIP = document.getElementById('myIP').value;
+  var myPORT = document.getElementById('myPORT').value;
+
+  var url = 'http://' + myIP +':'+ myPORT +'/touchscreen';
+  var win = window.open(url, '_blank');
+  win.focus();
+}
+
+function analyze(){
+  submitRequest_output('change.php?analyze='+document.getElementById('clusterName').value);
+  showAndHideStatus();
+}
+
+function createCharts(){
+  submitRequest_output('change.php?charts='+document.getElementById('myTag').value);
+  showAndHideStatus();
+}
+
+function cleanData(){
+  submitRequest('change.php?clean='+document.getElementById('myCleanBox').value);
   showAndHideStatus();
 }

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+//Peruse-a-rue Benchmarking
 $var_Break="[BRK]";
 if (isset($_REQUEST['initPeruse']) and ($_REQUEST['initPeruse'] != '') and isset($_REQUEST['port']) and ($_REQUEST['port'] != '')) { 
         $var1 = "Connecting to: " . $_REQUEST['initPeruse'] . ":" . $_REQUEST['port'];
@@ -20,31 +21,25 @@ if (isset($_REQUEST['initPeruse']) and ($_REQUEST['initPeruse'] != '') and isset
 
         echo "$var1"; 
 	shell_exec("/usr/bin/sudo -H -u lg /home/lg/bin/lg-peruse-a-rue $var2");
-}elseif (isset($_REQUEST['connCtrl'])) { 
-	echo "Controller Connected";
+
 }elseif (isset($_REQUEST['startPeruseTour'])) { 
-	$var1= "Starting Peruse-a-rue Benchmark";
-	$result= shell_exec('/usr/bin/sudo -H -u lg /home/lg/LG_Web-Benchmarking/Benchmark/Monitor/Benchmark.sh ' . $_REQUEST['startPeruseTour']);
+	$var1= "Peruse-a-rue Benchmark done";
+	$var2= $_REQUEST['startPeruseTour'] ." ". $_REQUEST['ip'] ." ". $_REQUEST['port']. " " . $_REQUEST['time'];
+	$result= shell_exec('/usr/bin/sudo -H -u lg /home/lg/LG_Web-Benchmarking/Benchmark/Monitor/Benchmark.sh ' . $var2);
 	echo "$var1$var_Break$result"; 
-}elseif (isset($_REQUEST['fps'])) { 
-	echo "Switched ON/OFF FPS";
-}elseif (isset($_REQUEST['getlog'])) {
-        echo "Log retrieved";
-}elseif (isset($_REQUEST['autobenchmark'])) { 
-    echo "Starting auto benchmarking";
-    exec('/usr/bin/sudo -H -u lg /home/lg/LG_Benchmarking/Scripts/fullBenchmark.sh');
-}elseif (isset($_REQUEST['clear'])) { 
-    echo "Clearing Cache";
-    exec('/usr/bin/sudo -H -u lg /home/lg/LG_Benchmarking/Scripts/clearCache.sh 3');
-}elseif (isset($_REQUEST['analize'])) { 
-    echo "Analizing";
-    exec('/usr/bin/sudo -H -u lg /home/lg/LG_Benchmarking/Scripts/Analize.sh');
-}elseif (isset($_REQUEST['copydata'])) { 
-    echo "Copying Data";
-    exec('/usr/bin/sudo -H -u lg /home/lg/LG_Benchmarking/Scripts/CopyData.sh');
+}elseif (isset($_REQUEST['analyze'])) { 
+	$var1="Analyzed";
+	$result= shell_exec('/usr/bin/sudo -H -u lg /home/lg/LG_Web-Benchmarking/Benchmark/Parse/Analyze.sh '. $_REQUEST['analyze']);
+	echo "$var1$var_Break$result"; 
 }elseif (isset($_REQUEST['charts'])) { 
-    echo "Getting Charts";
-    exec('/usr/bin/sudo -H -u lg /home/lg/LG_Benchmarking/Chart-gen/getCharts.sh');
+	$var1="Created Charts";
+	$result= shell_exec('/usr/bin/sudo -H -u lg /home/lg/LG_Web-Benchmarking/Benchmark/Charts-gen/getCharts.sh '. $_REQUEST['charts']);
+	echo "$var1$var_Break$result"; 
+}elseif (isset($_REQUEST['clean'])) { 
+	echo "Cleaned Data";
+	exec('/usr/bin/sudo -H -u lg /home/lg/LG_Web-Benchmarking/cleanBench.sh '. $_REQUEST['clean']);
+
+//TOOLS
 }elseif (isset($_REQUEST['query']) and ($_REQUEST['query'] == 'relaunch')) {
     echo "Relaunching";
     exec('/usr/bin/sudo -H -u lg /home/lg/bin/lg-relaunch');
