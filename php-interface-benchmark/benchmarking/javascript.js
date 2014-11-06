@@ -182,9 +182,10 @@ function startTour(){
   var tag= document.getElementById("myTag").value;
 	var myIP = document.getElementById('myIP').value;
 	var myPORT = document.getElementById('myPORT').value;
+	var myJumps = document.getElementById('myJumps').value;
 	var myTime = document.getElementById('myTime').value;
 	emitLogONOFF();
-	submitRequest_output('change.php?startPeruseTour=' + tag + '&ip=' + myIP + '&port=' +myPORT + '&time=' +myTime);
+	submitRequest_output('change.php?startPeruseTour=' + tag + '&ip=' + myIP + '&port=' +myPORT + '&jumps=' +myJumps + '&time=' +myTime);
 	showAndHideStatus();
 	emitLogONOFF();
 	emitDownloadLog();

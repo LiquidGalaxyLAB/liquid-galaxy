@@ -26,8 +26,10 @@
 				<input type="text"  id = "clusterName" value="endpoint">
 				<label for="myTag"> Tour Tag </label>
 				<input type="text"  id = "myTag" value="default">
-				<label for="myTime"> Tour Time </label>
-				<input type="text"  id = "myTime" value="15">
+				<label for="myJumps"> Jumps </label>
+                                <input type="text"  id = "myJumps" value="10">
+				<label for="myTime"> Timing </label>
+				<input type="text"  id = "myTime" value="5">
 				<a href="#" onClick="startTour()">Start Benchmark</a>
 			</li>
 	

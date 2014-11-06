@@ -24,7 +24,7 @@ if (isset($_REQUEST['initPeruse']) and ($_REQUEST['initPeruse'] != '') and isset
 
 }elseif (isset($_REQUEST['startPeruseTour'])) { 
 	$var1= "Peruse-a-rue Benchmark done";
-	$var2= $_REQUEST['startPeruseTour'] ." ". $_REQUEST['ip'] ." ". $_REQUEST['port']. " " . $_REQUEST['time'];
+	$var2= $_REQUEST['startPeruseTour'] ." ". $_REQUEST['ip'] ." ". $_REQUEST['port']. " " . $_REQUEST['jumps'] . " " . $_REQUEST['time'];
 	$result= shell_exec('/usr/bin/sudo -H -u lg /home/lg/LG_Web-Benchmarking/Benchmark/Monitor/Benchmark.sh ' . $var2);
 	echo "$var1$var_Break$result"; 
 }elseif (isset($_REQUEST['analyze'])) { 
