@@ -180,6 +180,8 @@ else
 	sudo cp -r $HOME/ssh-files/etc/ssh /etc/
 	sudo cp -r $HOME/ssh-files/root/.ssh /root/ 2> /dev/null
 	sudo cp -r $HOME/ssh-files/user/.ssh $HOME/
+	sudo rm -r $HOME/ssh-files/
+	sudo rm $HOME/ssh-files.zip
 fi
 sudo chmod 0600 $HOME/.ssh/lg-id_rsa
 sudo chmod 0600 /root/.ssh/authorized_keys
