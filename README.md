@@ -83,6 +83,7 @@ various names, but things should still work fine.
 The following tree represents the suggested directory hierarchy 
 within the "lg" user's home directory:
 
+```
 /home/lg
 |-- bin
 |-- earth
@@ -98,6 +99,7 @@ within the "lg" user's home directory:
     `-- images
         |-- backgrounds
         `-- google
+```
 
 Using example scripts and tools within this repo, there should also be a "/lg"
 directory on the system owned by "lg" user.
