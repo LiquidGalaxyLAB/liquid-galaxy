@@ -297,6 +297,7 @@ if [ $MASTER == true ]; then
 	sudo touch /etc/apache2/httpd.conf
 	sudo sed -i '/accept.lock/d' /etc/apache2/apache2.conf
 	sudo cp -r $GIT_FOLDER_NAME/php-interface/. /var/www/html/
+	sudo chown -R $LOCAL_USER:$LOCAL_USER /var/www/html/
 fi
 
 # Cleanup
