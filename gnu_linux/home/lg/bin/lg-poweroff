@@ -1,0 +1,15 @@
+#!/bin/bash
+
+. ${HOME}/etc/shell.conf
+
+lg_current="$(hostname)"
+	
+for lg in $LG_FRAMES; do
+	if [ "$lg" != "$lg_current" ]; then
+		ssh -t -x root@$lg "poweroff";
+	fi
+done
+
+ssh -t -x root@${lg_current} "poweroff"
+
+exit 0
