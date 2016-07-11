@@ -296,6 +296,7 @@ if [ $MASTER == true ]; then
 	sudo apt-get -qq install php5 php5-cgi libapache2-mod-php5 > /dev/null
 	sudo touch /etc/apache2/httpd.conf
 	sudo sed -i '/accept.lock/d' /etc/apache2/apache2.conf
+	sudo rm /var/www/html/index.html
 	sudo cp -r $GIT_FOLDER_NAME/php-interface/. /var/www/html/
 	sudo chown -R $LOCAL_USER:$LOCAL_USER /var/www/html/
 fi
