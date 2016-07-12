@@ -3,14 +3,16 @@
   padding: 0;
 }
 body {
-  background-color: black;
-  color: white;
+  background-color: #fafafa;
+  color: black;
   font-family: arial, sans-serif;
   font-size: 110%;
   margin: 0;
-  overflow: hidden;
   -webkit-user-select: none;
   -moz-user-select: none;
+}
+h3 {
+  color: #ee6e73;
 }
 #status {
   background-color: yellow;
@@ -26,8 +28,7 @@ body {
   -webkit-transition: opacity .5s linear .5s;
 }
 .touchscreen {
-  margin: 80 auto;
-  text-align: center;
+  margin: 10 auto;
   width: 90%;
 }
 .welcome {
@@ -114,6 +115,7 @@ body {
   -webkit-transition: z-index 0s linear .5s, opacity .5s linear;
 }
 .expand_active {
+  /*
   background-color: #C2DFFF;
   left: 10%;
   padding: 6 0 6 0;
@@ -122,22 +124,13 @@ body {
   top: 370px;
   width: 80%;
   opacity: 1;
-  z-index: 1; 
+  z-index: 1;
   -webkit-border-radius: 5px;
   -webkit-transition: z-index 0s linear .5s, opacity .5s linear;
+  */
 }
 .expand_inactive {
-  background-color: #C2DFFF;
-  left: 10%;
-  padding: 6 0 6 0;
-  position: absolute;
-  text-align: center;
-  top: 370px;
-  width: 80%;
-  opacity: 0;
-  z-index: -1;
-  -webkit-border-radius: 5px;
-  -webkit-transition: z-index 0s linear .5s, opacity .5s linear;
+  display: none;
 }
 .earth, .moon, .mars, .keyboard, .layers {
   display: inline-table;
@@ -328,4 +321,20 @@ body {
 }
 .keyboardKeyBackspace {
   width: 100px;
+}
+.disabled {
+  display: none;
+}
+.brand-logo {
+  margin-ĺeft: 10px;
+}
+.card {
+  text-align: center;
+}
+.collection-item {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.collection > .waves-effect {
+  display: inherit;
 }

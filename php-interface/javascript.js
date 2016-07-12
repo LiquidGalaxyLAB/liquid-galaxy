@@ -1,11 +1,11 @@
 /* Copyright 2010 Google Inc.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,7 +14,7 @@
  */
 
 /*
- * @fileoverview Handles AJAX requests and display restrictions for the 
+ * @fileoverview Handles AJAX requests and display restrictions for the
  * Liquid Galaxy touchscreen that is run via a webserver.
  */
 
@@ -87,41 +87,41 @@ function xchangePlanet(planet) {
 
 function changePlanet(planet) {
   submitRequest('change.php?planet=' + planet);
-  showAndHideStatus();
+  showAndHideStatus('Changing planet to ' + planet);
 }
 
 function changeQuery(query, name) {
   submitRequest('change.php?query=' + query + '&name=' + name);
-  showAndHideStatus();
+  showAndHideStatus('Changing query to ' + name);
 }
 
 function changeLayer(layer, name) {
   submitRequest('change.php?layer=' + layer + '&name=' + name);
-  showAndHideStatus();
+  showAndHideStatus('Changing layer to ' + name);
 }
 
 function syncKml(action, url) {
   submitRequest('sync_touchscreen.php?touch_action=' + action + '&touch_kml=' + url);
-  showAndHideStatus();
+  showAndHideStatus(' Syncing KML');
 }
 
-function toggleKml(obj, url) {
+function toggleKml(obj, url, name) {
   if (obj.className == 'kml_off') {
     submitRequest('sync_touchscreen.php?touch_action=add&touch_kml=' + url);
     obj.className='kml_on';
   }
   else if (obj.className == 'kml_on') {
-    
+
     submitRequest('sync_touchscreen.php?touch_action=delete&touch_kml=' + url);
     obj.className='kml_off';
   }
-  showAndHideStatus();
+  showAndHideStatus('Navigating to ' + name);
 }
 
-function showAndHideStatus() {
+function showAndHideStatus(val) {
   var status = document.getElementById('status');
-  status.style.opacity = 1;
-  window.setTimeout('document.getElementById("status").style.opacity = 0;', 2000);
+  var statusVal = val || status.innerHTML;
+  Materialize.toast(statusVal, 4000)
 }
 
 function setCaret() {
@@ -149,20 +149,25 @@ function clearKey() {
 }
 
 function searchKey() {
+  /*
   var keyboardEntry = document.getElementById('keyboardEntry');
   changeQuery('search=' + keyboardEntry.value, keyboardEntry.value);
-  setCaret();
+  setCaret(); 
+  */
+  var val = document.forms["search-form"]["place"].value;
+  changeQuery('search=' + val, val);
 }
 
 //Added by Sean (alchemist@google.com) to make keyboard enter key work to submit
 function enterKeySubmit(e) {
   if(e && e.keyCode == 13)
   {
-      searchKey();    
+      searchKey();
   }
 }
 
 function toggleExpand(on_obj, off_obj1, off_obj2, off_obj3, off_obj4){
+  document.getElementById('categories').className='disabled';
   document.getElementById(on_obj).className='expand_active';
   document.getElementById(off_obj1).className='expand_inactive';
   document.getElementById(off_obj2).className='expand_inactive';
@@ -175,4 +180,15 @@ function noneExpand(off_obj, off_obj1, off_obj2, off_obj3, off_obj4){
   document.getElementById(off_obj2).className='expand_inactive';
   document.getElementById(off_obj3).className='expand_inactive';
   document.getElementById(off_obj4).className='expand_inactive';
+}
+
+function enableSearchBar() {
+  $('#search-bar').removeClass('disabled');
+  $('#default-bar').addClass('disabled');
+  $('#search').focus();
+}
+
+function disableSearchBar() {
+  $('#search-bar').addClass('disabled');
+  $('#default-bar').removeClass('disabled');
 }
