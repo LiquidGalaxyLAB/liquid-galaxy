@@ -59,12 +59,12 @@ $existing_kml_url_list = array_values(getKmlListUrls($kml_data_file));
     <script type="text/javascript" src="javascript.js"></script>
     <script type="text/javascript">
       function clearKmls() {
-        showAndHideStatus();
+        //showAndHideStatus();
         <?php  $i = 0; foreach (array_values($queries['layers']) as $layer) { ?>
           submitRequest('sync_touchscreen.php?touch_action=delete&touch_kml=<?php echo $layer[1]; ?>');
-          document.getElementById('kml_<?php echo $i; ?>').className='kml_off';
+          //document.getElementById('kml_<?php echo $i; ?>').className='kml_off';
         <?php ++$i; } ?>
-        showAndHideStatus();
+        //showAndHideStatus();
       }
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
@@ -96,7 +96,7 @@ $existing_kml_url_list = array_values(getKmlListUrls($kml_data_file));
           <div class="row">
             <h3 class="header left">Earth</h3>
           </div>
-          <ul class="collection with-header">
+          <ul class="collection">
           <?php $i = 0; foreach (array_values($queries['earth']) as $layer) { ?>
               <li id="kml_<?php echo $i; ?>" class="collection-item waves-effect" onclick="changeQuery('<?php echo $layer[1]; ?>', '<?php echo $layer[0]; ?>');">
                 <div>
@@ -157,7 +157,7 @@ $existing_kml_url_list = array_values(getKmlListUrls($kml_data_file));
 
       <div id="categories" class="row">
         <div class="col s12 m6 l3">
-          <div class="card medium" onclick="changePlanet('earth');  toggleExpand('e_earth', 'e_layers', 'e_moon', 'e_mars', 'e_keyboard');">
+          <div class="card medium" onclick="changePlanet('earth'); clearKmls(); toggleExpand('e_earth', 'e_layers', 'e_moon', 'e_mars', 'e_keyboard');">
              <div class="card-image waves-effect waves-block waves-light">
                <img class="activator" src="earth.png">
              </div>
@@ -196,7 +196,7 @@ $existing_kml_url_list = array_values(getKmlListUrls($kml_data_file));
           </div>
         </div>
         <div class="col s12 m6 l3">
-          <div class="card medium" onclick="changePlanet('earth');  toggleExpand('e_layers', 'e_earth', 'e_mars','e_moon', 'e_keyboard');">
+          <div class="card medium" onclick="changePlanet('earth'); clearKmls(); toggleExpand('e_layers', 'e_earth', 'e_mars','e_moon', 'e_keyboard');">
              <div class="card-image waves-effect waves-block waves-light">
                <img class="activator" src="layers.png">
              </div>
