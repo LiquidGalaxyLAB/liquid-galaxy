@@ -23,6 +23,7 @@ if ($handle) {
     $buffer = fgets($handle);
     if (substr_count($buffer, $delimiter) == 2) {
       list($planet, $name, $query) = explode($delimiter, $buffer);
+      $planet = explode('/', $planet)[0]; // tmp subcategories
       $queries[$planet][] = array(trim($name), trim($query));
     }
   }
