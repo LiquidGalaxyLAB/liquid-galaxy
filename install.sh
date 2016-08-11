@@ -33,8 +33,6 @@ EARTH_FOLDER="/opt/google/earth/free/"
 NETWORK_INTERFACE=$(/sbin/route -n | grep "^0.0.0.0" | rev | cut -d' ' -f1 | rev)
 NETWORK_INTERFACE_MAC=$(ifconfig | grep 'enp2s0' | awk '{print $5}')
 SSH_PASSPHRASE=""
-PERFECT_FULL_SCREEN=false
-PERFECT_FULL_SCREEN_QUESTION="no"
 
 read -p "Machine id (i.e. 1 for lg1) (1 == master): " MACHINE_ID
 MACHINE_NAME="lg"$MACHINE_ID
@@ -47,8 +45,7 @@ else
 fi
 read -p "Total machines count (i.e. 3): " TOTAL_MACHINES
 read -p "LG frames (i.e. lg3 lg1 lg2): " LG_FRAMES
-read -p "Unique number that identifies your Galaxy (octet) (i.e. 42): " OCTETr
-read -p "Perfect full screen (with openbox) (i.e. yes) (i.e. no)? " PERFECT_FULL_SCREEN_QUESTION
+read -p "Unique number that identifies your Galaxy (octet) (i.e. 42): " OCTET
 
 #
 # Pre-start
@@ -66,10 +63,6 @@ if [ $MASTER == false ]; then
 	)
 fi
 
-if [ $PERFECT_FULL_SCREEN_QUESTION == "yes" ]; then
-	PERFECT_FULL_SCREEN=true
-fi
-
 cat << EOM
 
 Liquid Galaxy will be installed with the following configuration:
@@ -85,14 +78,13 @@ EARTH_DEB: $EARTH_DEB
 EARTH_FOLDER: $EARTH_FOLDER
 NETWORK_INTERFACE: $NETWORK_INTERFACE
 NETWORK_MAC_ADDRESS: $NETWORK_INTERFACE_MAC
-PERFECT FULL SCREEN: $PERFECT_FULL_SCREEN
 
 Is it correct? Press any key to continue or CTRL-C to exit
 EOM
 read
 
 if [ "$(cat /etc/os-release | grep NAME=\"Ubuntu\")" == "" ]; then
-	echo "Warning!! This script is intended to be run on an Ubuntu OS. It may not work as expected."
+	echo "Warning!! This script is meant to be run on an Ubuntu OS. It may not work as expected."
 	echo -n "Press any key to continue or CTRL-C to exit"
 	read
 fi
@@ -115,6 +107,7 @@ sudo tee /etc/lightdm/lightdm.conf > /dev/null << EOM
 autologin-guest=false
 autologin-user=$LOCAL_USER
 autologin-user-timeout=0
+autologin-session=ubuntu
 EOM
 
 # Update OS
@@ -300,16 +293,6 @@ EOM
 mkdir -p $HOME/.config/autostart/
 echo -e "[Desktop Entry]\nName=LG\nExec=bash "$HOME"/bin/startup-script.sh\nType=Application" > $HOME"/.config/autostart/lg.desktop"
 
-# Google Earth perfect full screen (hides top white menu)
-if [ $PERFECT_FULL_SCREEN ]; then
-	echo "Installing perfect full screen..."
-	sudo apt-get install -qq openbox devilspie > /dev/null
-	echo -e "[Desktop Entry]\nName=LG\nExec=bash "$HOME"/earth/scripts/run-devilspie.sh\nType=Application" > $HOME"/.config/autostart/ds.desktop"
-	echo -e "[Desktop]\nSession=openbox" > $HOME"/.dmrc"
-	sudo sed -i "s/\(wasFullScreen *= *\).*/\1false/" $HOME/earth/config/master/GoogleEarthPlus.conf-7.1.2
-	sudo sed -i "s/\(wasFullScreen *= *\).*/\1false/" $HOME/earth/config/slave/GoogleEarthPlus.conf-7.1.2
-fi
-
 # Web interface
 if [ $MASTER == true ]; then
 	echo "Installing web interface (master only)..."
@@ -333,9 +316,6 @@ sudo apt-get -qq autoremove > /dev/null
 
 echo "Liquid Galaxy installation completed! :-)"
 echo "Press any key to reboot now"
-if [ $PERFECT_FULL_SCREEN ]; then
-	echo "Important: Only next time you log in, you will need to log out, check Openbox (not Gnome) on the login panel for full-screen-mode to work. Otherwise you will be still seeing the white menu header at the top."
-fi
 read
 reboot
 

@@ -81,7 +81,7 @@ while true ; do
     DISPLAY=:0 /usr/bin/xdotool mousemove -screen 0 1190 1910
 
     logger -p local3.info -i "$0: running earth"
-    ./googleearth -style cleanlooks --fullscreen -font '-adobe-helvetica-bold-r-normal-*-3-*-*-*-p-*-iso8859-1'
+    ./googleearth -style cleanlooks -font '-adobe-helvetica-bold-r-normal-*-3-*-*-*-p-*-iso8859-1'
     # Normally use TINY font size to make the menu bar small and unobtrusive, but error windows become unreadable.
     # use the below execution for large font. (qt4 is supposed to ignore '-font' if built with freetype support).
     #./googleearth -style cleanlooks --fullscreen -font '-adobe-helvetica-bold-r-normal-*-16-*-*-*-p-*-iso8859-1'
