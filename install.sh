@@ -101,15 +101,6 @@ sudo -v
 # General
 #
 
-# Set screen orientation & autologin
-sudo tee /etc/lightdm/lightdm.conf > /dev/null << EOM
-[Seat:*]
-autologin-guest=false
-autologin-user=$LOCAL_USER
-autologin-user-timeout=0
-autologin-session=ubuntu
-EOM
-
 # Update OS
 echo "Checking for system updates..."
 sudo apt-get -qq update > /dev/null
@@ -120,8 +111,6 @@ sudo apt-get -qq dist-upgrade > /dev/null
 
 echo "Installing new packages..."
 sudo apt-get install -qq git chromium-browser nautilus openssh-server sshpass squid3 squid-cgi apache2 xdotool unclutter > /dev/null
-​sudo apt-get install -qq libfontconfig1:i386 libx11-6:i386​ libxrender1:i386 libxext6:i386 libglu1-mesa:i386 libglib2.0-0:i386 libsm6:i386 > /dev/null # earth x64 bits os
-sudo apt-get remove --purge -qq update-notifier* > /dev/null
 
 echo "Installing Google Earth..."
 wget -q $EARTH_DEB
@@ -132,6 +121,13 @@ rm google-earth-stable*.deb
 
 # OS config tweaks (like disabling idling, hiding launcher bar, ...)
 echo "Setting system configuration..."
+sudo tee /etc/lightdm/lightdm.conf > /dev/null << EOM
+[Seat:*]
+autologin-guest=false
+autologin-user=$LOCAL_USER
+autologin-user-timeout=0
+autologin-session=ubuntu
+EOM
 echo autologin-user=lg >> sudo /etc/lightdm/lightdm.conf
 gsettings set org.gnome.desktop.screensaver idle-activation-enabled false
 gsettings set org.gnome.desktop.session idle-delay 0
@@ -141,6 +137,7 @@ echo -e 'Section "ServerFlags"\nOption "blanktime" "0"\nOption "standbytime" "0"
 gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ launcher-hide-mode 1
 sudo update-alternatives --set x-www-browser /usr/bin/chromium-browser --quiet
 sudo update-alternatives --set gnome-www-browser /usr/bin/chromium-browser --quiet
+sudo apt-get remove --purge -qq update-notifier* > /dev/null
 
 #
 # Liquid Galaxy
