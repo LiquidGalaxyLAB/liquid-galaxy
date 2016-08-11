@@ -44,11 +44,11 @@ else
 	echo "Make sure Master machine (lg1) is connected to the network before proceding!"
 	read -p "Master machine IP (i.e. 192.168.1.42): " MASTER_IP
 	read -p "Master local user password (i.e. lg password): " MASTER_PASSWORD
-	read -p "Perfect full screen (with openbox) (i.e. yes) (i.e. no)? " PERFECT_FULL_SCREEN_QUESTION
 fi
 read -p "Total machines count (i.e. 3): " TOTAL_MACHINES
 read -p "LG frames (i.e. lg3 lg1 lg2): " LG_FRAMES
-read -p "Unique number that identifies your Galaxy (octet) (i.e. 42): " OCTET
+read -p "Unique number that identifies your Galaxy (octet) (i.e. 42): " OCTETr
+read -p "Perfect full screen (with openbox) (i.e. yes) (i.e. no)? " PERFECT_FULL_SCREEN_QUESTION
 
 #
 # Pre-start
@@ -128,7 +128,7 @@ sudo apt-get -qq dist-upgrade > /dev/null
 echo "Installing new packages..."
 sudo apt-get install -qq git chromium-browser nautilus openssh-server sshpass squid3 squid-cgi apache2 xdotool unclutter > /dev/null
 ​sudo apt-get install -qq libfontconfig1:i386 libx11-6:i386​ libxrender1:i386 libxext6:i386 libglu1-mesa:i386 libglib2.0-0:i386 libsm6:i386 > /dev/null # earth x64 bits os
-sudo apt-get purge -qq update-notifier* > /dev/null
+sudo apt-get remove --purge -qq update-notifier* > /dev/null
 
 echo "Installing Google Earth..."
 wget -q $EARTH_DEB
@@ -303,8 +303,9 @@ echo -e "[Desktop Entry]\nName=LG\nExec=bash "$HOME"/bin/startup-script.sh\nType
 # Google Earth perfect full screen (hides top white menu)
 if [ $PERFECT_FULL_SCREEN ]; then
 	echo "Installing perfect full screen..."
-	sudo apt-get install openbox devilspie
-	echo -e "[Desktop Entry]\nName=LG\nExec=bash "$HOME"/earth/scripts/generate-devilspie.py && devilspie\nType=Application" > $HOME"/.config/autostart/ds.desktop"
+	sudo apt-get install -qq openbox devilspie > /dev/null
+	echo -e "[Desktop Entry]\nName=LG\nExec=bash "$HOME"/earth/scripts/run-devilspie.sh\nType=Application" > $HOME"/.config/autostart/ds.desktop"
+	echo -e "[Desktop]\nSession=openbox" > $HOME"/.dmrc"
 	sudo sed -i "s/\(wasFullScreen *= *\).*/\1false/" $HOME/earth/config/master/GoogleEarthPlus.conf-7.1.2
 	sudo sed -i "s/\(wasFullScreen *= *\).*/\1false/" $HOME/earth/config/slave/GoogleEarthPlus.conf-7.1.2
 fi
