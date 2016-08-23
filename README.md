@@ -60,9 +60,9 @@ Once the slaves installation has completed (including the reboot), you might hav
 
 ### Other installation details
 
-Device GPU drivers might not be enabled by default. Make sure to install your device's latest drivers.
-
-If your Liquid Galaxy setup is using the screens in vertical, you will have to rotate them manually (on Ubuntu: Launchpad -> Displays -> Rotation -> Counterclockwise).
+- Device GPU drivers might not be enabled by default. Make sure to install your device's latest drivers.
+- If your Liquid Galaxy setup is using the screens in vertical, you will have to rotate them manually (on Ubuntu: Launchpad -> Displays -> Rotation -> Counterclockwise).
+- In certain devices you might get across a "Clamped Polygons Not Supported" warning. You can hide this warning permanently by editing these files in all Liquid Galaxy machines: ~/earth/config/master/GoogleEarthPlus.conf and ~/earth/config/slave/GoogleEarthPlus.conf ==> paste `MessageEntryList-4_3=fillPolys-disabledByCard` anywhere inside the `[General]` section.
 
 ### [Optional] Full-screen
 
