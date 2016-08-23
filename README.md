@@ -20,6 +20,10 @@ Get and execute installation file on the target machine (from any user folder):
 
 `cd ~ && wget https://raw.githubusercontent.com/LiquidGalaxyLAB/liquid-galaxy/master/install.sh -O install.sh && chmod u+x install.sh && ./install.sh; rm -rf install.sh`
 
+x64 bits OS might require these additional libraries in order to start Google Earth:
+
+`sudo apt-get install -y libfontconfig1:i386 libx11-6:i386​ libxrender1:i386 libxext6:i386 libglu1-mesa:i386 libglib2.0-0:i386 libsm6:i386`
+
 **Master:**
 
 Machine id: the number that identifies your machine (only the number part of the lgX machine name).<br>

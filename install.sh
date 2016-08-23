@@ -35,6 +35,9 @@ NETWORK_INTERFACE_MAC=$(ifconfig | grep 'enp2s0' | awk '{print $5}')
 SSH_PASSPHRASE=""
 
 read -p "Machine id (i.e. 1 for lg1) (1 == master): " MACHINE_ID
+if [ "$(echo $MACHINE_ID | cut -c-2)" == "lg" ]; then
+	MACHINE_ID="$(echo $MACHINE_NAME | cut -c3-)"
+fi
 MACHINE_NAME="lg"$MACHINE_ID
 if [ $MACHINE_ID == "1" ]; then
 	MASTER=true
