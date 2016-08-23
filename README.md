@@ -60,6 +60,24 @@ Device GPU drivers might not be enabled by default. Make sure to install your de
 
 If your Liquid Galaxy setup is using the screens in vertical, you will have to rotate them manually (on Ubuntu: Launchpad -> Displays -> Rotation -> Counterclockwise).
 
+### [Optional] Full-screen
+
+Liquid Galaxy will by default display Earth's menu bar, which is useful for development but not very good looking for demonstrations.
+
+It is up whether to enable it:
+
+`~/tools/earth-fullscreen.sh && sudo reboot`
+
+Full screen uses another window manager ([Openbox](http://openbox.org/wiki/Main_Page)), which does not share Gnome's display settings. If needed, you can rotate your screens by typing the following:
+
+(Openbox tip: use <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>-></kbd> to move onto the next Workspace, then right click on desktop -> terminal emulator)
+
+`xrandr -o left && echo 'xrandr -o left' > ~/.xprofile`
+
+You can disable it anytime:
+
+`~/tools/revert-earth-fullscreen.sh && sudo reboot`
+
 
 ## Within this repository
 

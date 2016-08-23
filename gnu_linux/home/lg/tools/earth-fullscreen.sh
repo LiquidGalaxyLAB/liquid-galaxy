@@ -2,6 +2,11 @@
 
 #
 # Google Earth perfect full screen (hides top white menu)
+# https://groups.google.com/d/msg/liquid-galaxy/7yK4BDstM3o/t8WxCbvMgRAJ
+# Installs Openbox, a windows manager which unlike Gnome 
+# makes moving a window below negative vertical axis possible
+# Devilspie will automatically detect when Earth window is
+# open and move it to the right coordinates.
 #
 
 echo "Installing..."
