@@ -31,7 +31,7 @@ GIT_URL="https://github.com/LiquidGalaxyLAB/liquid-galaxy"
 EARTH_DEB="http://dl.google.com/dl/earth/client/current/google-earth-stable_current_i386.deb"
 EARTH_FOLDER="/opt/google/earth/free/"
 NETWORK_INTERFACE=$(/sbin/route -n | grep "^0.0.0.0" | rev | cut -d' ' -f1 | rev)
-NETWORK_INTERFACE_MAC=$(ifconfig | grep 'enp2s0' | awk '{print $5}')
+NETWORK_INTERFACE_MAC=$(ifconfig | grep $NETWORK_INTERFACE | awk '{print $5}')
 SSH_PASSPHRASE=""
 
 read -p "Machine id (i.e. 1 for lg1) (1 == master): " MACHINE_ID
@@ -296,7 +296,7 @@ echo -e "[Desktop Entry]\nName=LG\nExec=bash "$HOME"/bin/startup-script.sh\nType
 # Web interface
 if [ $MASTER == true ]; then
 	echo "Installing web interface (master only)..."
-	sudo apt-get -qq install php5 php5-cgi libapache2-mod-php5 > /dev/null
+	sudo apt-get -qq install php php-cgi libapache2-mod-php > /dev/null
 	sudo touch /etc/apache2/httpd.conf
 	sudo sed -i '/accept.lock/d' /etc/apache2/apache2.conf
 	sudo rm /var/www/html/index.html

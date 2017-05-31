@@ -2,7 +2,13 @@
 
 ## Installation
 
-Installation script is intended to be used on an Ubuntu. Whilst it may work on other distributions, I do not recommend it. (tested on an Ubuntu 15.10)
+The installation script (`install.sh`) is intended to be used with Ubuntu. It might not work
+with other distributions.
+
+Tested with:
+
+- Ubuntu 16.04 LTS
+- <strike>Ubuntu 15.10</strike>
 
 ### Distribution installation details:
 
