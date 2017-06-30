@@ -21,10 +21,9 @@ Other details such as the account name or user password are not relevant, write 
 
 ### Installation script
 
-
 Get and execute installation file on the target machine (from any user folder):
 
-`cd ~ && wget https://raw.githubusercontent.com/LiquidGalaxyLAB/liquid-galaxy/master/install.sh -O install.sh && chmod u+x install.sh && ./install.sh; rm -rf install.sh`
+`bash <(curl -s https://raw.githubusercontent.com/LiquidGalaxyLAB/liquid-galaxy/master/install.sh)`
 
 x64 bits OS might require these additional libraries in order to start Google Earth:
 
