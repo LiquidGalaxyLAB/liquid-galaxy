@@ -47,6 +47,22 @@
 					<viewFormat>BBOX=[bboxWest],[bboxSouth],[bboxEast],[bboxNorth];CAMERA=[cameraLon],[cameraLat],[cameraAlt],[lookatTilt],[lookatHeading];LOOKAT=[lookatLon],[lookatLat],[lookatHeading],[lookatTilt],[lookatRange]</viewFormat>
 				</Link>
 			</NetworkLink>
+			<NetworkLink>
+				<name>Solo KML</name>
+				<Link>
+					<href>##LG_PHPIFACE##/kml/master_1.kml</href>
+					<refreshMode>onInterval</refreshMode>
+					<refreshInterval>1</refreshInterval>
+				</Link>
+			</NetworkLink>
+			<NetworkLink>
+				<name>Solo KML Update</name>
+				<Link>
+					<href>##LG_PHPIFACE##/sync_nlc_1.php</href>
+					<refreshMode>onInterval</refreshMode>
+					<refreshInterval>1</refreshInterval>
+				</Link>
+			</NetworkLink>
 		</Folder>
 	</Folder>
 </Document>
