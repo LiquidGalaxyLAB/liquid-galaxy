@@ -69,6 +69,16 @@ Once the slaves installation has completed (including the reboot), you might hav
 - If your Liquid Galaxy setup is using the screens in vertical, you will have to rotate them manually (on Ubuntu: Launchpad -> Displays -> Rotation -> Counterclockwise).
 - In certain devices you might get across a "Clamped Polygons Not Supported" warning. You can hide this warning permanently by editing these files in all Liquid Galaxy machines: ~/earth/config/master/GoogleEarthPlus.conf and ~/earth/config/slave/GoogleEarthPlus.conf ==> paste `MessageEntryList-4_3=fillPolys-disabledByCard` anywhere inside the `[General]` section.
 
+### [Optional] API
+
+API will enable developers to control the Liquid Galaxy over common protocols, such as AJAX or WebSockets.
+
+For example, it makes it easy to send KML files to display on the Google Earth.
+
+*Although residing in a different repository, it has been built with this Liquid Galaxy installation in mind, and should not require more than a mere installation command.*
+
+See [https://github.com/LiquidGalaxyLAB/liquid-galaxy-api#liquid-galaxy-quickstart](https://github.com/LiquidGalaxyLAB/liquid-galaxy-api#liquid-galaxy-quickstart)
+
 ### [Optional] Full-screen
 
 Liquid Galaxy will by default display Earth's menu bar, which is useful for development but not very good looking for demonstrations.
