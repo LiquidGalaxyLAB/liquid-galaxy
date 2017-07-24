@@ -39,8 +39,6 @@
 				<name>Solo KML</name>
 				<Link>
 					<href>##LG_PHPIFACE##/kml/slave_x.kml</href>
-					<refreshMode>onInterval</refreshMode>
-					<refreshInterval>1</refreshInterval>
 				</Link>
 			</NetworkLink>
 			<NetworkLink>
