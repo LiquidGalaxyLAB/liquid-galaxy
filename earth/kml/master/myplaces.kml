@@ -51,8 +51,6 @@
 				<name>Solo KML</name>
 				<Link>
 					<href>##LG_PHPIFACE##kml/master_1.kml</href>
-					<refreshMode>onInterval</refreshMode>
-					<refreshInterval>1</refreshInterval>
 				</Link>
 			</NetworkLink>
 			<NetworkLink>
