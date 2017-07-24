@@ -50,7 +50,7 @@
 			<NetworkLink>
 				<name>Solo KML</name>
 				<Link>
-					<href>##LG_PHPIFACE##/kml/master_1.kml</href>
+					<href>##LG_PHPIFACE##kml/master_1.kml</href>
 					<refreshMode>onInterval</refreshMode>
 					<refreshInterval>1</refreshInterval>
 				</Link>
@@ -58,7 +58,7 @@
 			<NetworkLink>
 				<name>Solo KML Update</name>
 				<Link>
-					<href>##LG_PHPIFACE##/sync_nlc_1.php</href>
+					<href>##LG_PHPIFACE##sync_nlc_1.php</href>
 					<refreshMode>onInterval</refreshMode>
 					<refreshInterval>1</refreshInterval>
 				</Link>
