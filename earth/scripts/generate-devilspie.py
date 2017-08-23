@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
 	with open(filename, 'w') as f:
 		f.write("""(if
- (is (window_name) "Google Earth")
+ (is (window_name) "Google Earth Pro")
  (begin
   (geometry "%sx%s+0-1")
   (undecorate)
