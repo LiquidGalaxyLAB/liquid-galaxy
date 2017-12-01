@@ -106,20 +106,19 @@ sudo -v
 
 # Update OS
 echo "Checking for system updates..."
-sudo apt-get -qq update > /dev/null
+sudo apt-get update
 
 echo "Upgrading system packages ..."
-sudo apt-get -qq upgrade > /dev/null
-sudo apt-get -qq dist-upgrade > /dev/null
+sudo export DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 
 echo "Installing new packages..."
-sudo apt-get install -qq git chromium-browser nautilus openssh-server sshpass squid3 squid-cgi apache2 xdotool unclutter > /dev/null
+sudo export DEBIAN_FRONTEND=noninteractive apt-get install -y git chromium-browser nautilus openssh-server sshpass squid3 squid-cgi apache2 xdotool unclutter
 
 echo "Installing Google Earth..."
 wget -q $EARTH_DEB
-sudo dpkg -i google-earth-stable*.deb > /dev/null 2>&1
-sudo apt-get -qq -f install > /dev/null
-sudo dpkg -i google-earth-stable*.deb > /dev/null 2>&1
+sudo dpkg -i google-earth-stable*.deb
+sudo apt-get -y -f install
+sudo dpkg -i google-earth-stable*.deb
 rm google-earth-stable*.deb
 
 # OS config tweaks (like disabling idling, hiding launcher bar, ...)
@@ -318,7 +317,7 @@ sudo rm -r $GIT_FOLDER_NAME
 #
 
 echo "Cleaning up..."
-sudo apt-get -qq autoremove > /dev/null
+sudo apt-get -y autoremove
 
 echo "Liquid Galaxy installation completed! :-)"
 echo "Press any key to reboot now"
