@@ -104,15 +104,17 @@ sudo -v
 # General
 #
 
+export DEBIAN_FRONTEND=noninteractive
+
 # Update OS
 echo "Checking for system updates..."
 sudo apt-get update
 
 echo "Upgrading system packages ..."
-sudo export DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
+sudo apt-get -y upgrade
 
 echo "Installing new packages..."
-sudo export DEBIAN_FRONTEND=noninteractive apt-get install -y git chromium-browser nautilus openssh-server sshpass squid3 squid-cgi apache2 xdotool unclutter
+sudo apt-get install -y git chromium-browser nautilus openssh-server sshpass squid3 squid-cgi apache2 xdotool unclutter
 
 echo "Installing Google Earth..."
 wget -q $EARTH_DEB
@@ -137,9 +139,9 @@ gsettings set org.gnome.desktop.screensaver lock-enabled false
 gsettings set org.gnome.settings-daemon.plugins.power idle-dim false
 echo -e 'Section "ServerFlags"\nOption "blanktime" "0"\nOption "standbytime" "0"\nOption "suspendtime" "0"\nOption "offtime" "0"\nEndSection' | sudo tee -a /etc/X11/xorg.conf > /dev/null
 gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ launcher-hide-mode 1
-sudo update-alternatives --set x-www-browser /usr/bin/chromium-browser --quiet
-sudo update-alternatives --set gnome-www-browser /usr/bin/chromium-browser --quiet
-sudo apt-get remove --purge -qq update-notifier* > /dev/null
+sudo update-alternatives --set x-www-browser /usr/bin/chromium-browser
+sudo update-alternatives --set gnome-www-browser /usr/bin/chromium-browser
+sudo apt-get remove --purge -y update-notifier*
 
 #
 # Liquid Galaxy
@@ -147,7 +149,7 @@ sudo apt-get remove --purge -qq update-notifier* > /dev/null
 
 # Setup Liquid Galaxy files
 echo "Setting up Liquid Galaxy..."
-git clone -q $GIT_URL
+git clone $GIT_URL
 
 sudo cp -r $GIT_FOLDER_NAME/earth/ $HOME
 sudo ln -s $EARTH_FOLDER $HOME/earth/builds/latest
@@ -206,7 +208,7 @@ if [ $MASTER == true ]; then
 	sudo cp -r /root/.ssh ssh-files/root/ 2> /dev/null
 	mkdir -p ssh-files/user/
 	sudo cp -r $HOME/.ssh ssh-files/user/
-	sudo zip -FSr "ssh-files.zip" ssh-files > /dev/null
+	sudo zip -FSr "ssh-files.zip" ssh-files
 	if [ $(pwd) != $HOME ]; then
 		sudo mv ssh-files.zip $HOME/ssh-files.zip
 	fi
@@ -301,7 +303,7 @@ echo -e "[Desktop Entry]\nName=LG\nExec=bash "$HOME"/bin/startup-script.sh\nType
 # Web interface
 if [ $MASTER == true ]; then
 	echo "Installing web interface (master only)..."
-	sudo apt-get -qq install php php-cgi libapache2-mod-php > /dev/null
+	sudo apt-get -y install php php-cgi libapache2-mod-php
 	sudo touch /etc/apache2/httpd.conf
 	sudo sed -i '/accept.lock/d' /etc/apache2/apache2.conf
 	sudo rm /var/www/html/index.html
