@@ -111,15 +111,15 @@ echo "Checking for system updates..."
 sudo apt-get update
 
 echo "Upgrading system packages ..."
-sudo apt-get -y upgrade
+sudo apt-get -yq upgrade
 
 echo "Installing new packages..."
-sudo apt-get install -y git chromium-browser nautilus openssh-server sshpass squid3 squid-cgi apache2 xdotool unclutter
+sudo apt-get install -yq git chromium-browser nautilus openssh-server sshpass squid3 squid-cgi apache2 xdotool unclutter
 
 echo "Installing Google Earth..."
 wget -q $EARTH_DEB
 sudo dpkg -i google-earth-stable*.deb
-sudo apt-get -y -f install
+sudo apt-get -yq -f install
 sudo dpkg -i google-earth-stable*.deb
 rm google-earth-stable*.deb
 
@@ -141,7 +141,7 @@ echo -e 'Section "ServerFlags"\nOption "blanktime" "0"\nOption "standbytime" "0"
 gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ launcher-hide-mode 1
 sudo update-alternatives --set x-www-browser /usr/bin/chromium-browser
 sudo update-alternatives --set gnome-www-browser /usr/bin/chromium-browser
-sudo apt-get remove --purge -y update-notifier*
+sudo apt-get remove --purge -yq update-notifier*
 
 #
 # Liquid Galaxy
@@ -303,7 +303,7 @@ echo -e "[Desktop Entry]\nName=LG\nExec=bash "$HOME"/bin/startup-script.sh\nType
 # Web interface
 if [ $MASTER == true ]; then
 	echo "Installing web interface (master only)..."
-	sudo apt-get -y install php php-cgi libapache2-mod-php
+	sudo apt-get -yq install php php-cgi libapache2-mod-php
 	sudo touch /etc/apache2/httpd.conf
 	sudo sed -i '/accept.lock/d' /etc/apache2/apache2.conf
 	sudo rm /var/www/html/index.html
@@ -319,7 +319,7 @@ sudo rm -r $GIT_FOLDER_NAME
 #
 
 echo "Cleaning up..."
-sudo apt-get -y autoremove
+sudo apt-get -yq autoremove
 
 echo "Liquid Galaxy installation completed! :-)"
 echo "Press any key to reboot now"
