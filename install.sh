@@ -16,7 +16,7 @@ EOM
 # Parameters
 MASTER=false
 MASTER_IP=""
-MASTER_USER=$USER
+MASTER_USER=""
 MASTER_HOME=$HOME
 MASTER_PASSWORD=""
 LOCAL_USER=$USER
@@ -54,6 +54,18 @@ read -p "LG frames (i.e. lg3 lg1 lg2): " LG_FRAMES
 read -p "Unique number that identifies your Galaxy (octet) (i.e. 42): " OCTET
 
 #
+# Check if user 'lg' exists
+#
+
+if id "lg" >/dev/null 2>&1; then
+	MASTER_USER= "lg"
+else
+	echo "Creating user lg"
+	useradd -u lg -d /home/lg -s /bin/bash
+	MASTER_USER= "lg"
+fi
+
+#
 # Pre-start
 #
 
@@ -62,7 +74,6 @@ if [ $MASTER == false ]; then
 	PRINT_IF_NOT_MASTER=$(cat <<- EOM
 
 	MASTER_IP: $MASTER_IP
-	MASTER_USER: $MASTER_USER
 	MASTER_HOME: $MASTER_HOME
 	MASTER_PASSWORD: $MASTER_PASSWORD
 	EOM
