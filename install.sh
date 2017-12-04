@@ -29,6 +29,9 @@ SCREEN_ORIENTATION="V"
 GIT_FOLDER_NAME="liquid-galaxy"
 GIT_URL="https://github.com/LiquidGalaxyLAB/liquid-galaxy"
 EARTH_DEB="http://dl.google.com/dl/earth/client/current/google-earth-stable_current_i386.deb"
+if [ `getconf LONG_BIT` = "64" ]; then
+EARTH_DEB="http://dl.google.com/dl/earth/client/current/google-earth-stable_current_amd64.deb"
+fi
 EARTH_FOLDER="/opt/google/earth/pro/"
 NETWORK_INTERFACE=$(/sbin/route -n | grep "^0.0.0.0" | rev | cut -d' ' -f1 | rev)
 NETWORK_INTERFACE_MAC=$(ifconfig | grep $NETWORK_INTERFACE | awk '{print $5}')
@@ -320,6 +323,11 @@ sudo rm -r $GIT_FOLDER_NAME
 
 echo "Cleaning up..."
 sudo apt-get -yq autoremove
+
+if [ `getconf LONG_BIT` = "64" ]; then
+echo “Installing additional libraries for 64 bit OS”
+sudo apt-get install -y libfontconfig1:i386 libx11-6:i386 libxrender1:i386 libxext6:i386 libglu1-mesa:i386 libglib2.0-0:i386 libsm6:i386
+fi
 
 echo "Liquid Galaxy installation completed! :-)"
 echo "Press any key to reboot now"
