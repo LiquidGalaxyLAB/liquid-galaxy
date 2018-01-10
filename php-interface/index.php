@@ -12,9 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 include "sync_inc.php";
-
 $queries = array('layers' => array(), 'earth' => array(), 'moon' => array(), 'mars' => array());
 $delimiter = "@";
 $handle = @fopen("queries.txt", "r");
@@ -29,13 +27,10 @@ if ($handle) {
   }
   fclose($handle);
 }
-
 #LG server
 $KML_SYS_PATH = '/var/www/kml/';
 $KML_SERVER_BASE = 'http://lg1:81/kml/';
-
 $FILE_FILTER = '*.km[l|z]';
-
 $kml_files = array('earth' => array(), 'moon' => array(), 'mars' => array(), 'layers' => array());
 foreach (array_keys($kml_files) as $planet) {
   $planet_kml_path = $KML_SYS_PATH . $planet . "/" . $FILE_FILTER;
@@ -44,11 +39,8 @@ foreach (array_keys($kml_files) as $planet) {
     $kml_files[$planet][$basename[0]] = str_replace($KML_SYS_PATH, $KML_SERVER_BASE, $file);
   }
 }
-
 $kml_data_file = 'kmls.txt';
-
 $existing_kml_url_list = array_values(getKmlListUrls($kml_data_file));
-
 ?>
 <html>
   <head>
@@ -58,7 +50,9 @@ $existing_kml_url_list = array_values(getKmlListUrls($kml_data_file));
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" /></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
     <script type="text/javascript" src="javascript.js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
     <script type="text/javascript">
+
       function clearKmls() {
         //showAndHideStatus();
         <?php  $i = 0; foreach (array_values($queries['layers']) as $layer) { ?>
@@ -67,6 +61,19 @@ $existing_kml_url_list = array_values(getKmlListUrls($kml_data_file));
         <?php ++$i; } ?>
         //showAndHideStatus();
       }
+    </script>
+    <script type="text/javascript">
+         function display_kmlmap()
+      {
+          var map_options = { };  
+          var map = new google.maps.Map(document.getElementById("map_canvas"),map_options);
+
+          var kmlUrl = document.getElementById(myfile).files[0];
+          var kmlOptions = { map: map};
+
+          var kmlLayer = new google.maps.KmlLayer(kmlUrl, kmlOptions);
+      }
+
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
     <title>Liquid Galaxy</title>
@@ -156,6 +163,8 @@ $existing_kml_url_list = array_values(getKmlListUrls($kml_data_file));
         </ul>
       </div>
 
+
+
       <div id="categories" class="row">
         <div class="col s12 m6 l3">
           <div class="card medium" onclick="changePlanet('earth'); clearKmls(); toggleExpand('e_earth', 'e_layers', 'e_moon', 'e_mars', 'e_keyboard');">
@@ -209,6 +218,17 @@ $existing_kml_url_list = array_values(getKmlListUrls($kml_data_file));
              </div>
           </div>
         </div>
+      </div>
+      
+      <div class="kml_viewer">
+        <span class="card-title activator grey-text text-darken-4">Upload your KML files here to view them</span><br>
+
+        <input type="file" id="myFile" accept=".KML"><br>
+        <button type="submit" value="Submit" onclick="display_kmlmap()">Display KML</button><br>
+    
+        <div id="map_canvas" style="width:100%; height:900px; float:left">
+        </div>
+
       </div>
 
     </div>
