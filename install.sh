@@ -10,10 +10,9 @@ cat << "EOM"
 https://github.com/LiquidGalaxy/liquid-galaxy
 https://github.com/LiquidGalaxyLAB/liquid-galaxy
 -------------------------------------------------------------
-
 EOM
-
 # Parameters
+ARGUMENTS=arguments #to store information required for installation on slave nodes  
 MASTER=false
 MASTER_IP=""
 MASTER_USER=$USER
@@ -36,12 +35,13 @@ EARTH_FOLDER="/opt/google/earth/pro/"
 NETWORK_INTERFACE=$(/sbin/route -n | grep "^0.0.0.0" | rev | cut -d' ' -f1 | rev)
 NETWORK_INTERFACE_MAC=$(ifconfig | grep $NETWORK_INTERFACE | awk '{print $5}')
 SSH_PASSPHRASE=""
-
 read -p "Machine id (i.e. 1 for lg1) (1 == master): " MACHINE_ID
 if [ "$(echo $MACHINE_ID | cut -c-2)" == "lg" ]; then
 	MACHINE_ID="$(echo $MACHINE_NAME | cut -c3-)"
 fi
 MACHINE_NAME="lg"$MACHINE_ID
+
+#Remove all input for slaves
 if [ $MACHINE_ID == "1" ]; then
 	MASTER=true
 else
@@ -56,11 +56,10 @@ read -p "Unique number that identifies your Galaxy (octet) (i.e. 42): " OCTET
 #
 # Pre-start
 #
-
+ 
 PRINT_IF_NOT_MASTER=""
 if [ $MASTER == false ]; then
 	PRINT_IF_NOT_MASTER=$(cat <<- EOM
-
 	MASTER_IP: $MASTER_IP
 	MASTER_USER: $MASTER_USER
 	MASTER_HOME: $MASTER_HOME
@@ -68,9 +67,7 @@ if [ $MASTER == false ]; then
 	EOM
 	)
 fi
-
 cat << EOM
-
 Liquid Galaxy will be installed with the following configuration:
 MASTER: $MASTER
 LOCAL_USER: $LOCAL_USER
@@ -84,17 +81,14 @@ EARTH_DEB: $EARTH_DEB
 EARTH_FOLDER: $EARTH_FOLDER
 NETWORK_INTERFACE: $NETWORK_INTERFACE
 NETWORK_MAC_ADDRESS: $NETWORK_INTERFACE_MAC
-
 Is it correct? Press any key to continue or CTRL-C to exit
 EOM
 read
-
 if [ "$(cat /etc/os-release | grep NAME=\"Ubuntu\")" == "" ]; then
 	echo "Warning!! This script is meant to be run on an Ubuntu OS. It may not work as expected."
 	echo -n "Press any key to continue or CTRL-C to exit"
 	read
 fi
-
 if [[ $EUID -eq 0 ]]; then
    echo "Do not run it as root!" 1>&2
    exit 1
@@ -112,21 +106,17 @@ export DEBIAN_FRONTEND=noninteractive
 # Update OS
 echo "Checking for system updates..."
 sudo apt-get update
-
 echo "Upgrading system packages ..."
 sudo apt-get -yq upgrade
-
 echo "Installing new packages..."
 sudo apt-get install -yq git chromium-browser nautilus openssh-server sshpass squid3 squid-cgi apache2 xdotool unclutter lsb-core
-
 echo "Installing Google Earth..."
 wget -q $EARTH_DEB
 sudo dpkg -i google-earth-stable*.deb
 sudo apt-get -yq -f install
 sudo dpkg -i google-earth-stable*.deb
 rm google-earth-stable*.deb
-
-# OS config tweaks (like disabling idling, hiding launcher bar, ...)
+#OS config tweaks (like disabling idling, hiding launcher bar, ...)
 echo "Setting system configuration..."
 sudo tee /etc/lightdm/lightdm.conf > /dev/null << EOM
 [Seat:*]
@@ -152,29 +142,23 @@ sudo apt-get remove --purge -yq update-notifier*
 
 # Setup Liquid Galaxy files
 echo "Setting up Liquid Galaxy..."
-git clone $GIT_URL
-
+git clone -b KatherineAdair-test-1 $GIT_URL
 sudo cp -r $GIT_FOLDER_NAME/earth/ $HOME
 sudo ln -s $EARTH_FOLDER $HOME/earth/builds/latest
 awk '/LD_LIBRARY_PATH/{print "export LC_NUMERIC=en_US.UTF-8"}1' $HOME/earth/builds/latest/googleearth | sudo tee $HOME/earth/builds/latest/googleearth > /dev/null
-
-# Enable solo screen for slaves
+#Enable solo screen for slaves
 if [ $MASTER != true ]; then
 	sudo sed -i -e 's/slave_x/slave_'${MACHINE_ID}'/g' $HOME/earth/kml/slave/myplaces.kml
 	sudo sed -i -e 's/sync_nlc_x/sync_nlc_'${MACHINE_ID}'/g' $HOME/earth/kml/slave/myplaces.kml
 fi
-
 sudo cp -r $GIT_FOLDER_NAME/gnu_linux/home/lg/. $HOME
-
 cd $HOME"/dotfiles/"
 for file in *; do
     sudo mv "$file" ".$file"
 done
 sudo cp -r . $HOME
 cd - > /dev/null
-
 sudo cp -r $GIT_FOLDER_NAME/gnu_linux/etc/ $GIT_FOLDER_NAME/gnu_linux/patches/ $GIT_FOLDER_NAME/gnu_linux/sbin/ /
-
 sudo chmod 0440 /etc/sudoers.d/42-lg
 sudo ln -s /etc/apparmor.d/sbin.dhclient /etc/apparmor.d/disable/
 sudo apparmor_parser -R /etc/apparmor.d/sbin.dhclient
@@ -223,23 +207,43 @@ fi
 cat > $HOME/personavars.txt << 'EOM'
 DHCP_LG_FRAMES="lg3 lg1 lg2"
 DHCP_LG_FRAMES_MAX=3
-
 FRAME_NO=$(cat /home/lg/frame 2>/dev/null)
 DHCP_LG_SCREEN="$(( ${FRAME_NO} + 1 ))"
 DHCP_LG_SCREEN_COUNT=1
 DHCP_OCTET=42
 DHCP_LG_PHPIFACE="http://lg1:81/"
-
 DHCP_EARTH_PORT=45678
 DHCP_EARTH_BUILD="latest"
 DHCP_EARTH_QUERY="/tmp/query.txt"
-
 DHCP_MPLAYER_PORT=45680
 EOM
 sed -i "s/\(DHCP_LG_FRAMES *= *\).*/\1\"$LG_FRAMES\"/" $HOME/personavars.txt
 sed -i "s/\(DHCP_LG_FRAMES_MAX *= *\).*/\1$TOTAL_MACHINES/" $HOME/personavars.txt
 sed -i "s/\(DHCP_OCTET *= *\).*/\1$OCTET/" $HOME/personavars.txt
 sudo $HOME/bin/personality.sh $MACHINE_ID $OCTET > /dev/null
+
+#Installing on slave nodes
+if [ $MASTER == true ]; then
+        FILEPATH=$(readlink -m arguments)
+	SCRIPT="sudo apt-get install curl; scp lg@lg1.local:$FILEPATH $HOME/arguments; bash <(curl -s https://raw.githubusercontent.com/LiquidGalaxyLAB/liquid-galaxy/master/install.sh) < $HOME/arguments"
+        USERNAME="lg"
+        echo "Installing on slave nodes..."
+        echo $(ip route get 8.8.8.8 | awk '{print $NF; exit}') >> arguments 
+        read -p "Master local user password (i.e lg password): " MASTER_PASSWORD
+        echo $MASTER_PASSWORD >> arguments
+        echo $TOTAL_MACHINES >> arguments
+        echo $LG_FRAMES >> arguments
+        echo $OCTET >> arguments  
+        for NAME in $LG_FRAMES; do
+        	if [ "$NAME" != "lg1" ]; then
+                        HOSTNAME=$NAME".local"
+                        SLAVE_ID=$(echo "${NAME: -1}")
+                        echo $SLAVE_ID | cat - arguments > temp && mv temp arguments
+			sudo sh -c "ssh-keyscan ${HOSTNAME} >> /root/.ssh/known_hosts"
+                        sudo ssh -X -t ${HOSTNAME} ${USERNAME} "${SCRIPT}"
+		fi
+    	done
+fi
 
 # Network configuration
 sudo tee -a "/etc/network/interfaces" > /dev/null << EOM
@@ -313,25 +317,21 @@ if [ $MASTER == true ]; then
 	sudo cp -r $GIT_FOLDER_NAME/php-interface/. /var/www/html/
 	sudo chown -R $LOCAL_USER:$LOCAL_USER /var/www/html/
 fi
-
+               
 # Cleanup
 sudo rm -r $GIT_FOLDER_NAME
 
 #
 # Global cleanup
 #
-
 echo "Cleaning up..."
 sudo apt-get -yq autoremove
-
 if [ `getconf LONG_BIT` = "64" ]; then
-echo “Installing additional libraries for 64 bit OS”
+echo "Installing additional libraries for 64 bit OS"
 sudo apt-get install -y libfontconfig1:i386 libx11-6:i386 libxrender1:i386 libxext6:i386 libglu1-mesa:i386 libglib2.0-0:i386 libsm6:i386
 fi
-
 echo "Liquid Galaxy installation completed! :-)"
 echo "Press any key to reboot now"
 read
-reboot
-
+sudo reboot
 exit 0
