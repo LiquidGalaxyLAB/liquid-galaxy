@@ -50,6 +50,7 @@ $kml_data_file = 'kmls.txt';
 $existing_kml_url_list = array_values(getKmlListUrls($kml_data_file));
 
 ?>
+
 <html>
   <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
@@ -58,7 +59,9 @@ $existing_kml_url_list = array_values(getKmlListUrls($kml_data_file));
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" /></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
     <script type="text/javascript" src="javascript.js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
     <script type="text/javascript">
+
       function clearKmls() {
         //showAndHideStatus();
         <?php  $i = 0; foreach (array_values($queries['layers']) as $layer) { ?>
@@ -68,9 +71,25 @@ $existing_kml_url_list = array_values(getKmlListUrls($kml_data_file));
         //showAndHideStatus();
       }
     </script>
+    <script type="text/javascript">
+
+         function display_kmlmap()
+      {
+          var map_options = { };  
+          var map = new google.maps.Map(document.getElementById("map_canvas"),map_options);
+
+          var kmlUrl = document.getElementById(myFile).files[0];
+          var kmlOptions = { map: map};
+
+          var kmlLayer = new google.maps.KmlLayer(kmlUrl, kmlOptions);
+      }
+
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
     <title>Liquid Galaxy</title>
   </head>
+
+  
   <body onload="noneExpand('e_earth', 'e_layers', 'e_moon', 'e_mars', 'e_keyboard');">
     <nav>
       <div id="default-bar" class="nav-wrapper">
@@ -156,6 +175,8 @@ $existing_kml_url_list = array_values(getKmlListUrls($kml_data_file));
         </ul>
       </div>
 
+
+
       <div id="categories" class="row">
         <div class="col s12 m6 l3">
           <div class="card medium" onclick="changePlanet('earth'); clearKmls(); toggleExpand('e_earth', 'e_layers', 'e_moon', 'e_mars', 'e_keyboard');">
@@ -209,6 +230,17 @@ $existing_kml_url_list = array_values(getKmlListUrls($kml_data_file));
              </div>
           </div>
         </div>
+      </div>
+      
+      <div class="kml_viewer">
+        <span class="card-title activator grey-text text-darken-4">Upload your KML files here to view them</span><br>
+
+        <input type="file" id="myFile" accept=".KML"><br>
+        <button type="submit" value="Submit" onclick="display_kmlmap()">Display KML</button><br>
+    
+        <div id="map_canvas" style="width:100%; height:900px; float:left">
+        </div>
+
       </div>
 
     </div>
