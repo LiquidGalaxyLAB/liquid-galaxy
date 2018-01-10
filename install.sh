@@ -11,8 +11,7 @@ https://github.com/LiquidGalaxy/liquid-galaxy
 https://github.com/LiquidGalaxyLAB/liquid-galaxy
 -------------------------------------------------------------
 EOM
-# Parameters
-ARGUMENTS=arguments #to store information required for installation on slave nodes  
+# Parameters  
 MASTER=false
 MASTER_IP=""
 MASTER_USER=$USER
@@ -25,6 +24,7 @@ TOTAL_MACHINES="3"
 LG_FRAMES="lg3 lg1 lg2"
 OCTET="42"
 SCREEN_ORIENTATION="V"
+ARGUMENTS=arguments   #to store information required for installation on slave nodes
 GIT_FOLDER_NAME="liquid-galaxy"
 GIT_URL="https://github.com/LiquidGalaxyLAB/liquid-galaxy"
 EARTH_DEB="http://dl.google.com/dl/earth/client/current/google-earth-stable_current_i386.deb"
@@ -142,7 +142,7 @@ sudo apt-get remove --purge -yq update-notifier*
 
 # Setup Liquid Galaxy files
 echo "Setting up Liquid Galaxy..."
-git clone -b KatherineAdair-test-1 $GIT_URL
+git clone $GIT_URL
 sudo cp -r $GIT_FOLDER_NAME/earth/ $HOME
 sudo ln -s $EARTH_FOLDER $HOME/earth/builds/latest
 awk '/LD_LIBRARY_PATH/{print "export LC_NUMERIC=en_US.UTF-8"}1' $HOME/earth/builds/latest/googleearth | sudo tee $HOME/earth/builds/latest/googleearth > /dev/null
