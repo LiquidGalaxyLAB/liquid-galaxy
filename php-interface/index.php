@@ -220,10 +220,11 @@ $existing_kml_url_list = array_values(getKmlListUrls($kml_data_file));
         </div>
       </div>
       
-      <div class="kml_viewer" onload="display_kmlmap()">
+      <div class="kml_viewer">
         <span class="card-title activator grey-text text-darken-4">Upload your KML files here to view them</span><br>
 
         <input type="file" id="myFile" accept=".KML"><br>
+        <button type="submit" value="Submit" onclick="display_kmlmap()">Display KML</button>
     
         <div id="map_canvas" style="width:100%; height:900px; float:left">
         </div>
