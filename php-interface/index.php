@@ -78,7 +78,7 @@ $existing_kml_url_list = array_values(getKmlListUrls($kml_data_file));
           var map_options = { };  
           var map = new google.maps.Map(document.getElementById("map_canvas"),map_options);
 
-          var kmlUrl = document.getElementById(myFile).files[0];
+          var kmlUrl = document.getElementById("myFile").files[0];
           var kmlOptions = { map: map};
 
           var kmlLayer = new google.maps.KmlLayer(kmlUrl, kmlOptions);
