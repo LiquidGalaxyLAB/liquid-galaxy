@@ -59,6 +59,8 @@ $existing_kml_url_list = array_values(getKmlListUrls($kml_data_file));
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" /></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
     <script type="text/javascript" src="javascript.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvlBrh_2GMekwnGAgfcfwtZ-mxVB3fX80&callback=initMap"
+  type="text/javascript"></script>
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
     <script type="text/javascript">
 
