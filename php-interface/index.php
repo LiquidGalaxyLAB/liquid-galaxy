@@ -59,6 +59,7 @@ $existing_kml_url_list = array_values(getKmlListUrls($kml_data_file));
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" /></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
     <script type="text/javascript" src="javascript.js"></script>
+    <script type="text/javascript" src="geoxml3.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvlBrh_2GMekwnGAgfcfwtZ-mxVB3fX80&callback=initMap"
   type="text/javascript"></script>
   
@@ -80,8 +81,9 @@ $existing_kml_url_list = array_values(getKmlListUrls($kml_data_file));
           var map_options = { };  
           var map = new google.maps.Map(document.getElementById("map_canvas"),map_options);
 
-          var kmlUrl = document.getElementById("myFile").files[0];
-          var kmlOptions = { map: map};
+          var myParser = new geoXML3.parser({map: map});
+          myParser.parse(document.getElementById("myFile").files[0]);
+
 
           var kmlLayer = new google.maps.KmlLayer(kmlUrl, kmlOptions);
       }
