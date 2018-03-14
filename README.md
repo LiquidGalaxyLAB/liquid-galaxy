@@ -67,6 +67,9 @@ Once the slaves installation has completed (including the reboot), you might hav
 
 - Device GPU drivers might not be enabled by default. Make sure to install your device's latest drivers.
 - If your Liquid Galaxy setup is using the screens in vertical, you will have to rotate them manually (on Ubuntu: Launchpad -> Displays -> Rotation -> Counterclockwise).
+- When booting Ubuntu Installation from your USB, if the USB doesn't appear as a boot option in the list of the BIOS, please make sure your CSM (Compatibility Support Module) allows booting from both Legacy and UEFI systems.
+- When opening Google Earth Pro application, if the screen doesn't properly load, it might be due to the incompatiblity between Google Earth Pro 7.3 and X.Org X server. Install Nvidia driver in order to solve the problem with this command:
+`sudo apt-get install nvidia-384 && shutdown -r now`
 
 ### [Optional] API
 
