@@ -64,8 +64,8 @@ chmod 0700 ${HOME}/.ssh
 touch $AUTH_KEYS
 chmod 0600 $AUTH_KEYS
 
-# overwrite local authorized_keys
-cat $LG_PUBKEY > $AUTH_KEYS
+# append key to local authorized_keys
+cat $LG_PUBKEY >> $AUTH_KEYS
 
 # NOW FOR ROOT
 sudo mkdir -p /root/.ssh
@@ -73,8 +73,8 @@ sudo chmod 0700 /root/.ssh
 sudo touch /root/.ssh/authorized_keys
 sudo chmod 0600 /root/.ssh/authorized_keys
 
-# overwrite root authorized_keys
-sudo sh -c "cat $LG_PUBKEY > /root/.ssh/authorized_keys"
+# append key to root authorized_keys
+sudo sh -c "cat $LG_PUBKEY >> /root/.ssh/authorized_keys"
 
 echo "all done: make sure to also setup \"${HOME}/.ssh/config\".
 You may also want to add some of your own keys."
