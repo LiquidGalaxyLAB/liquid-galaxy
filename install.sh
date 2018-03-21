@@ -36,7 +36,7 @@ EARTH_DEB="http://dl.google.com/dl/earth/client/current/google-earth-stable_curr
 fi
 EARTH_FOLDER="/opt/google/earth/pro/"
 NETWORK_INTERFACE=$(/sbin/route -n | grep "^0.0.0.0" | rev | cut -d' ' -f1 | rev)
-NETWORK_INTERFACE_MAC=$(sudo ifconfig | grep $NETWORK_INTERFACE | awk '{print $5}')
+NETWORK_INTERFACE_MAC=$(/sbin/ifconfig | grep $NETWORK_INTERFACE | awk '{print $5}')
 SSH_PASSPHRASE=""
 
 read -p "Machine id (i.e. 1 for lg1) (1 == master): " MACHINE_ID
