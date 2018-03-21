@@ -52,7 +52,6 @@ else
 	read -p "Master local user password (i.e. lg password): " MASTER_PASSWORD
 fi
 read -p "Total machines count (i.e. 3): " TOTAL_MACHINES
-read -p "LG frames (i.e. lg3 lg1 lg2): " LG_FRAMES
 read -p "Unique number that identifies your Galaxy (octet) (i.e. 42): " OCTET
 read -p "Do you want to install extra drivers? (y/n): " INSTALL_DRIVERS_CHAR
 
@@ -71,6 +70,22 @@ if [ $MASTER == false ]; then
 	EOM
 	)
 fi
+
+mid=$((TOTAL_MACHINES / 2))
+
+array=()
+
+for j in `seq $((mid + 2)) $TOTAL_MACHINES`;
+do
+    array+=("lg"$j)
+done
+
+for j in `seq 1 $((mid+1))`;
+do
+    array+=("lg"$j)
+done
+
+printf -v LG_FRAMES "%s " "${array[@]}"
 
 if [ $INSTALL_DRIVERS_CHAR == "y" ] || [$INSTALL_DRIVERS_CHAR == "Y" ] ; then
 	INSTALL_DRIVERS=true
