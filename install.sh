@@ -15,6 +15,7 @@ EOM
 
 # Parameters
 MASTER=false
+INSTALL_DRIVERS=false
 MASTER_IP=""
 MASTER_USER=$USER
 MASTER_HOME=$HOME
@@ -23,6 +24,7 @@ LOCAL_USER=$USER
 MACHINE_ID="1"
 MACHINE_NAME="lg"$MACHINE_ID
 TOTAL_MACHINES="3"
+INSTALL_DRIVERS_CHAR="n"
 LG_FRAMES="lg3 lg1 lg2"
 OCTET="42"
 SCREEN_ORIENTATION="V"
@@ -52,6 +54,7 @@ fi
 read -p "Total machines count (i.e. 3): " TOTAL_MACHINES
 read -p "LG frames (i.e. lg3 lg1 lg2): " LG_FRAMES
 read -p "Unique number that identifies your Galaxy (octet) (i.e. 42): " OCTET
+read -p "Do you want to install extra drivers? (y/n): " INSTALL_DRIVERS_CHAR
 
 #
 # Pre-start
@@ -69,6 +72,10 @@ if [ $MASTER == false ]; then
 	)
 fi
 
+if [ $INSTALL_DRIVERS_CHAR == "y" ] || [$INSTALL_DRIVERS_CHAR == "Y" ] ; then
+	INSTALL_DRIVERS=true
+fi
+
 cat << EOM
 
 Liquid Galaxy will be installed with the following configuration:
@@ -78,6 +85,7 @@ MACHINE_ID: $MACHINE_ID
 MACHINE_NAME: $MACHINE_NAME $PRINT_IF_NOT_MASTER
 TOTAL_MACHINES: $TOTAL_MACHINES
 OCTET (UNIQUE NUMBER): $OCTET
+INSTALL_DRIVERS: $INSTALL_DRIVERS
 GIT_URL: $GIT_URL 
 GIT_FOLDER: $GIT_FOLDER_NAME
 EARTH_DEB: $EARTH_DEB
@@ -118,6 +126,11 @@ sudo apt-get -yq upgrade
 
 echo "Installing new packages..."
 sudo apt-get install -yq git chromium-browser nautilus openssh-server sshpass squid3 squid-cgi apache2 xdotool unclutter
+
+if [ $INSTALL_DRIVERS == true ] ; then
+	echo "Installing extra drivers..."
+	sudo apt-get install -yq libfontconfig1:i386 libx11-6:i386 libxrender1:i386 libxext6:i386 libglu1-mesa:i386 libglib2.0-0:i386 libsm6:i386
+fi
 
 echo "Installing Google Earth..."
 wget -q $EARTH_DEB
@@ -330,7 +343,7 @@ sudo apt-get install -y libfontconfig1:i386 libx11-6:i386 libxrender1:i386 libxe
 fi
 
 echo "Liquid Galaxy installation completed! :-)"
-echo "Press any key to reboot now"
+echo "Press ENTER key to reboot now"
 read
 reboot
 
