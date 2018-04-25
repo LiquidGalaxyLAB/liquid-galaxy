@@ -145,6 +145,7 @@ sudo apt-get install -yq git chromium-browser nautilus openssh-server sshpass sq
 if [ $INSTALL_DRIVERS == true ] ; then
 	echo "Installing extra drivers..."
 	sudo apt-get install -yq libfontconfig1:i386 libx11-6:i386 libxrender1:i386 libxext6:i386 libglu1-mesa:i386 libglib2.0-0:i386 libsm6:i386
+	sudo apt-get install nvidia-361
 fi
 
 echo "Installing Google Earth..."
