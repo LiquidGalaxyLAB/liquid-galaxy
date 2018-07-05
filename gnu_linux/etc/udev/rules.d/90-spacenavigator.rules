@@ -4,3 +4,4 @@
 
 # "SYSFS" selection is depricated
 SUBSYSTEM=="input", KERNEL=="event[0-9]*", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c626", MODE="0664", GROUP="plugdev", SYMLINK+="input/spacenavigator"
+SUBSYSTEM=="input", KERNEL=="event[0-9]*", ATTRS{idVendor}=="256f", ATTRS{idProduct}=="c652", MODE="0664", GROUP="plugdev", SYMLINK+="input/spacenavigator"
