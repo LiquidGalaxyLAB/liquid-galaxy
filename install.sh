@@ -31,6 +31,7 @@ SCREEN_ORIENTATION="V"
 GIT_FOLDER_NAME="liquid-galaxy"
 GIT_URL="https://github.com/LiquidGalaxyLAB/liquid-galaxy"
 EARTH_DEB="http://dl.google.com/dl/earth/client/current/google-earth-stable_current_i386.deb"
+EARTH_DEB7="https://raw.githubusercontent.com/LiquidGalaxyLAB/liquid-galaxy/master/google-earth-pro7_1.deb"
 if [ `getconf LONG_BIT` = "64" ]; then
 EARTH_DEB="http://dl.google.com/dl/earth/client/current/google-earth-stable_current_amd64.deb"
 fi
