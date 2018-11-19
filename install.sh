@@ -138,7 +138,7 @@ echo "Checking for system updates..."
 sudo apt-get update
 
 echo "Upgrading system packages ..."
-sudo apt-get -yq upgrade
+sudo apt-get -yqf upgrade
 
 echo "Installing new packages..."
 sudo apt-get install -yq git chromium-browser nautilus openssh-server sshpass squid3 squid-cgi apache2 xdotool unclutter
@@ -150,11 +150,9 @@ if [ $INSTALL_DRIVERS == true ] ; then
 fi
 
 echo "Installing Google Earth..."
-wget -q $EARTH_DEB
-sudo dpkg -i google-earth-stable*.deb
-sudo apt-get -yq -f install
-sudo dpkg -i google-earth-stable*.deb
-rm google-earth-stable*.deb
+wget -q $EARTH_DEB7
+sudo dpkg -i google-earth*.deb
+rm google-earth*.deb
 
 # OS config tweaks (like disabling idling, hiding launcher bar, ...)
 echo "Setting system configuration..."
