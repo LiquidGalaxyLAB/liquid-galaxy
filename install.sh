@@ -142,6 +142,7 @@ sudo apt-get -yqf upgrade
 
 echo "Installing new packages..."
 sudo apt-get install -yq git chromium-browser nautilus openssh-server sshpass squid3 squid-cgi apache2 xdotool unclutter
+sudo apt-get install -yq lsb-core lsb
 
 if [ $INSTALL_DRIVERS == true ] ; then
 	echo "Installing extra drivers..."
@@ -152,6 +153,7 @@ fi
 echo "Installing Google Earth..."
 wget -q $EARTH_DEB7
 sudo dpkg -i google-earth*.deb
+sudo apt -f install
 rm google-earth*.deb
 
 # OS config tweaks (like disabling idling, hiding launcher bar, ...)
