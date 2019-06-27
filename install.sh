@@ -153,7 +153,7 @@ fi
 echo "Installing Google Earth..."
 wget -q $EARTH_DEB7
 sudo dpkg -i google-earth*.deb
-sudo apt -f install
+sudo apt-get -f install
 rm google-earth*.deb
 
 # OS config tweaks (like disabling idling, hiding launcher bar, ...)
