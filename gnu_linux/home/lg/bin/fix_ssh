@@ -26,6 +26,8 @@ MASTER_HOME=$HOME
 MASTER_PASSWORD=""
 LOCAL_USER=$USER
 
+sudo -v
+
 read -p "Master machine IP (i.e. 192.168.1.42): " MASTER_IP
 read -p "Master local user password (i.e. lg password): " MASTER_PASSWORD
 
