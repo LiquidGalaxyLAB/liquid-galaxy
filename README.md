@@ -103,8 +103,8 @@ Full screen uses another window manager ([Openbox](http://openbox.org/wiki/Main_
 (Openbox tip: use <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>-></kbd> to move onto the next Workspace, then right click on desktop -> terminal emulator)
 
 ```bash
-echo 'xrandr -o left && xset s off' > ~/.xprofile
-xrandr -o left && xset s off
+echo 'xrandr -o left;xset s off;xset -dpms;xset s noblank' > ~/.xprofile
+xrandr -o left;xset s off;xset -dpms;xset s noblank
 ```
 
 You can disable it anytime:
