@@ -11,3 +11,7 @@ www-data ALL=(lg) NOPASSWD: /home/lg/bin/lg-sudo-bg service lightdm restart
 www-data ALL=(lg) NOPASSWD: /home/lg/bin/lg-run-bg
 www-data ALL=(lg) NOPASSWD: /home/lg/bin/mp-control
 #www-data ALL=(lg) NOPASSWD: /home/lg/LG_Benchmarking/Chart-gen/getCharts.sh
+
+lg ALL=(ALL) NOPASSWD: /usr/sbin/tcpdump*
+lg ALL=(ALL) NOPASSWD: /bin/ln*
+lg ALL=(ALL) NOPASSWD: /bin/chmod +0666 /dev/uinput

@@ -141,8 +141,10 @@ echo "Upgrading system packages ..."
 sudo apt-get -yqf upgrade
 
 echo "Installing new packages..."
-sudo apt-get install -yq git chromium-browser nautilus openssh-server sshpass squid3 squid-cgi apache2 xdotool unclutter
+sudo apt-get install -yq python3 python3-pip tcpdump git chromium-browser nautilus openssh-server sshpass squid3 squid-cgi apache2 xdotool unclutter
 sudo apt-get install -yq lsb-core lsb
+
+pip3 install evdev
 
 if [ $INSTALL_DRIVERS == true ] ; then
 	echo "Installing extra drivers..."
@@ -211,6 +213,8 @@ sudo apparmor_parser -R /etc/apparmor.d/sbin.dhclient
 sudo /etc/init.d/apparmor restart > /dev/null
 sudo chown -R $LOCAL_USER:$LOCAL_USER $HOME
 sudo chown $LOCAL_USER:$LOCAL_USER /home/lg/earth/builds/latest/drivers.ini
+
+sudo chmod +0666 /dev/uinput
 
 # Configure SSH
 if [ $MASTER == true ]; then
