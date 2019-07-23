@@ -29,10 +29,10 @@ if [[ $FRAME_NO = 0 ]]; then
     sudo chmod +0666 /dev/uinput
     if [[ -z $(~/bin/list_devices_input | grep virtual-spaceavigator |  head -1) ]]; then
         ~/bin/create_virtual_spacenavigator &
-        while [[ -z $(~/bin/list_devices_input | grep virtual-spaceavigator |  head -1) ]]; do
+        while [[ -z $(sudo ~/bin/list_devices_input | grep virtual-spaceavigator |  head -1) ]]; do
             sleep 0.1
         done
-        sudo ln -sf $(~/bin/list_devices_input | grep virtual-spaceavigator |  head -1 | cut -d ' ' -f 1) /dev/input/spacenavigator 
+        sudo ln -sf $(sudo ~/bin/list_devices_input | grep virtual-spaceavigator |  head -1 | cut -d ' ' -f 1) /dev/input/spacenavigator 
     fi
     ${SCRIPDIR}/launch-earth.sh &
     ${HOME}/bin/earth.tcl &
