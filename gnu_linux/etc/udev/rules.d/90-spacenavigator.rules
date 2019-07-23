@@ -6,6 +6,6 @@
 SUBSYSTEM=="input", ACTION=="add", KERNEL=="event[0-9]*", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c626", MODE="0664", GROUP="plugdev", SYMLINK+="input/spacenavigator"
 SUBSYSTEM=="input", ACTION=="add", KERNEL=="event[0-9]*", ATTRS{idVendor}=="256f", ATTRS{idProduct}=="c652", MODE="0664", GROUP="plugdev", SYMLINK+="input/spacenavigator"
 
-SUBSYSTEM=="input", ACTION=="remove", ENV{ID_VENDOR}=="046d", ENV{ID_MODEL_ID}=="c626", RUN+="/bin/sh /home/lg/bin/setup_virtualspacenavigator_symlink.sh"
-SUBSYSTEM=="input", ACTION=="remove", ENV{ID_VENDOR}=="256f", ENV{ID_MODEL_ID}=="c652", RUN+="/bin/sh /home/lg/bin/setup_virtualspacenavigator_symlink.sh"
+SUBSYSTEM=="input", ACTION=="remove", ENV{ID_VENDOR_ID}=="046d", ENV{ID_MODEL_ID}=="c626", RUN+="/home/lg/bin/setup_virtualspacenavigator_symlink.sh"
+SUBSYSTEM=="input", ACTION=="remove", ENV{ID_VENDOR_ID}=="256f", ENV{ID_MODEL_ID}=="c652", RUN+="/home/lg/bin/setup_virtualspacenavigator_symlink.sh"
 
