@@ -1,0 +1,4 @@
+#!/bin/bash
+
+sudo tcpdump host 10.42.$(cat ~/personavars.txt | grep DHCP_OCTET | sed 's/=/\ /g' | awk '{print $2}').255 and port 45678 -c 1 -A 2>/dev/null | tr ',' '\n' | tail -n 9 | head -n -1
+
