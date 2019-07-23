@@ -14,7 +14,8 @@ www-data ALL=(lg) NOPASSWD: /home/lg/bin/mp-control
 
 lg ALL=(ALL) NOPASSWD: /usr/sbin/tcpdump*
 lg ALL=(ALL) NOPASSWD: /bin/ln*
-plugdev ALL=(ALL) NOPASSWD: /bin/ln*
+%plugdev ALL=(ALL) NOPASSWD: /bin/ln*
+%input ALL=(ALL) NOPASSWD: /bin/ln*
 lg ALL=(ALL) NOPASSWD: /bin/chmod +0666 /dev/uinput
 lg ALL=(ALL) NOPASSWD: /home/lg/bin/list_devices_input
 
