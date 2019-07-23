@@ -32,6 +32,7 @@ if [[ $FRAME_NO = 0 ]]; then
         while [[ -z $(sudo ~/bin/list_devices_input | grep virtual-spaceavigator |  head -1) ]]; do
             sleep 0.1
         done
+        echo $(sudo ~/bin/list_devices_input | grep virtual-spaceavigator |  head -1 | cut -d ' ' -f 1) > /home/lg/virtual_spacenavigator_event
         sudo ln -sf $(sudo ~/bin/list_devices_input | grep virtual-spaceavigator |  head -1 | cut -d ' ' -f 1) /dev/input/spacenavigator 
     fi
     ${SCRIPDIR}/launch-earth.sh &
