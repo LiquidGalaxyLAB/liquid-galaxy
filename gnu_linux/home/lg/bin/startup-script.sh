@@ -27,7 +27,7 @@ if [[ $FRAME_NO = 0 ]]; then
 
     #nitrogen --set-zoom-fill ${XDG_PICTURES_DIR}/backgrounds/lg-bg-${FRAME_NO}.png &
     sudo chmod +0666 /dev/uinput
-    if [[ -z $(~/bin/list_devices_input | grep virtual-spaceavigator |  head -1) ]]; then
+    if [[ -z $(sudo ~/bin/list_devices_input | grep virtual-spaceavigator |  head -1) ]]; then
         ~/bin/create_virtual_spacenavigator &
         while [[ -z $(sudo ~/bin/list_devices_input | grep virtual-spaceavigator |  head -1) ]]; do
             sleep 0.1
