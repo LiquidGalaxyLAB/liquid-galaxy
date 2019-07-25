@@ -141,8 +141,7 @@ echo "Upgrading system packages ..."
 sudo apt-get -yqf upgrade
 
 echo "Installing new packages..."
-sudo apt-get install -yq python3 python3-pip tcpdump git chromium-browser nautilus openssh-server sshpass squid3 squid-cgi apache2 xdotool unclutter
-sudo apt-get install -yq lsb-core lsb
+sudo apt-get install -yq python3 python3-pip tcpdump git chromium-browser nautilus openssh-server sshpass squid3 squid-cgi apache2 xdotool unclutter lsb-core lsb libc6-dev-i386 gcc
 
 pip3 install evdev
 
@@ -317,7 +316,7 @@ sudo tee "/etc/iptables.conf" > /dev/null << EOM
 -A INPUT -p tcp -m multiport --dports 22 -j ACCEPT
 -A INPUT -s 10.42.0.0/16 -p udp -m udp --dport 161 -j ACCEPT
 -A INPUT -s 10.42.0.0/16 -p udp -m udp --dport 3401 -j ACCEPT
--A INPUT -p tcp -m multiport --dports 81,8111 -j ACCEPT
+-A INPUT -p tcp -m multiport --dports 81,8111,8112 -j ACCEPT
 -A INPUT -s 10.42.$OCTET.0/24 -p tcp -m multiport --dports 80,3128,3130 -j ACCEPT
 -A INPUT -s 10.42.$OCTET.0/24 -p udp -m multiport --dports 80,3128,3130 -j ACCEPT
 -A INPUT -s 10.42.$OCTET.0/24 -p tcp -m multiport --dports 9335 -j ACCEPT
@@ -336,6 +335,9 @@ EOM
 # Launch on boot
 mkdir -p $HOME/.config/autostart/
 echo -e "[Desktop Entry]\nName=LG\nExec=bash "$HOME"/bin/startup-script.sh\nType=Application" > $HOME"/.config/autostart/lg.desktop"
+
+gcc -m32 -o "$HOME"/write-event $GIT_FOLDER_NAME/input_event/write-event.c 
+sudo chmod 0755 "$HOME"/write-event
 
 # Web interface
 if [ $MASTER == true ]; then
