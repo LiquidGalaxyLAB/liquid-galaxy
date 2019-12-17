@@ -31,29 +31,44 @@ SCREEN_ORIENTATION="V"
 GIT_FOLDER_NAME="liquid-galaxy"
 GIT_URL="https://github.com/LiquidGalaxyLAB/liquid-galaxy"
 EARTH_DEB="http://dl.google.com/dl/earth/client/current/google-earth-stable_current_i386.deb"
-EARTH_DEB7="https://raw.githubusercontent.com/LiquidGalaxyLAB/liquid-galaxy/master/google-earth-pro7_1.deb"
+
 if [ `getconf LONG_BIT` = "64" ]; then
-EARTH_DEB="http://dl.google.com/dl/earth/client/current/google-earth-stable_current_amd64.deb"
+    EARTH_DEB="http://dl.google.com/dl/earth/client/current/google-earth-stable_current_amd64.deb"
 fi
+
 EARTH_FOLDER="/opt/google/earth/pro/"
-NETWORK_INTERFACE=$(/sbin/route -n | grep "^0.0.0.0" | rev | cut -d' ' -f1 | rev)
+NETWORK_INTERFACE=$(/sbin/route -n | grep "^0.0.0.0" | rev | cut -d ' ' -z -f1 | rev)
 NETWORK_INTERFACE_MAC=$(/sbin/ifconfig | grep $NETWORK_INTERFACE | awk '{print $5}')
 SSH_PASSPHRASE=""
+USER_PATH=$(pwd)/$GIT_FOLDER_NAME
 
 read -p "Machine id (i.e. 1 for lg1) (1 == master): " MACHINE_ID
+
 if [ "$(echo $MACHINE_ID | cut -c-2)" == "lg" ]; then
 	MACHINE_ID="$(echo $MACHINE_NAME | cut -c3-)"
 fi
+
 MACHINE_NAME="lg"$MACHINE_ID
+
 if [ $MACHINE_ID == "1" ]; then
 	MASTER=true
+	MASTER_IP=$(/sbin/ifconfig | grep --after-context=1 $NETWORK_INTERFACE | awk -F " Bcast" '{print $1}' | awk -F "inet addr:" '{print $2}')
+    echo "Save the IP ADDRESS of this machine: $MASTER_IP"
+	read -p "Press any key to continue"
 else
+
 	echo "Make sure Master machine (lg1) is connected to the network before proceding!"
-	read -p "Master machine IP (i.e. 192.168.1.42): " MASTER_IP
-	read -p "Master local user password (i.e. lg password): " MASTER_PASSWORD
+	
+    read -p "Master machine IP (i.e. 192.168.1.42): " MASTER_IP
+	
+    read -p "Master local user password (i.e. lg password): " MASTER_PASSWORD
+
 fi
+
 read -p "Total machines count (i.e. 3): " TOTAL_MACHINES
+
 read -p "Unique number that identifies your Galaxy (octet) (i.e. 42): " OCTET
+
 read -p "Do you want to install extra drivers? (y/n): " INSTALL_DRIVERS_CHAR
 
 #
@@ -61,14 +76,21 @@ read -p "Do you want to install extra drivers? (y/n): " INSTALL_DRIVERS_CHAR
 #
 
 PRINT_IF_NOT_MASTER=""
+
 if [ $MASTER == false ]; then
+
 	PRINT_IF_NOT_MASTER=$(cat <<- EOM
 
 	MASTER_IP: $MASTER_IP
+
 	MASTER_USER: $MASTER_USER
+
 	MASTER_HOME: $MASTER_HOME
+
 	MASTER_PASSWORD: $MASTER_PASSWORD
+
 	EOM
+
 	)
 fi
 
@@ -78,54 +100,92 @@ array=()
 
 for j in `seq $((mid + 2)) $TOTAL_MACHINES`;
 do
+
     array+=("lg"$j)
+
 done
 
 for j in `seq 1 $((mid+1))`;
 do
+
     array+=("lg"$j)
+
 done
 
 printf -v LG_FRAMES "%s " "${array[@]}"
 
 if [ $INSTALL_DRIVERS_CHAR == "y" ] || [$INSTALL_DRIVERS_CHAR == "Y" ] ; then
-	INSTALL_DRIVERS=true
+	
+    INSTALL_DRIVERS=true
+
 fi
 
 cat << EOM
 
 Liquid Galaxy will be installed with the following configuration:
+
 MASTER: $MASTER
+
 LOCAL_USER: $LOCAL_USER
+
 MACHINE_ID: $MACHINE_ID
+
 MACHINE_NAME: $MACHINE_NAME $PRINT_IF_NOT_MASTER
+
 TOTAL_MACHINES: $TOTAL_MACHINES
+
 OCTET (UNIQUE NUMBER): $OCTET
+
 INSTALL_DRIVERS: $INSTALL_DRIVERS
+
 GIT_URL: $GIT_URL 
+
 GIT_FOLDER: $GIT_FOLDER_NAME
+
 EARTH_DEB: $EARTH_DEB
+
 EARTH_FOLDER: $EARTH_FOLDER
+
 NETWORK_INTERFACE: $NETWORK_INTERFACE
+
 NETWORK_MAC_ADDRESS: $NETWORK_INTERFACE_MAC
 
 Is it correct? Press any key to continue or CTRL-C to exit
+
 EOM
+
 read
 
 if [ "$(cat /etc/os-release | grep NAME=\"Ubuntu\")" == "" ]; then
+
 	echo "Warning!! This script is meant to be run on an Ubuntu OS. It may not work as expected."
-	echo -n "Press any key to continue or CTRL-C to exit"
-	read
+	
+    echo -n "Press any key to continue or CTRL-C to exit"
+	
+    read
+
 fi
 
 if [[ $EUID -eq 0 ]]; then
+
    echo "Do not run it as root!" 1>&2
+
    exit 1
+
 fi
 
 # Initialize sudo access
 sudo -v
+
+FOLDER_EXIST=$(find / -iname $GIT_FOLDER_NAME -print -quit 2>/dev/null)
+
+if [ "$FOLDER_EXIST" == "" ]; then
+	sudo apt install git
+	git clone $GIT_URL
+else
+	echo "Folder already exists"
+	USER_PATH=$FOLDER_EXIST
+fi
 
 #
 # General
@@ -135,26 +195,34 @@ export DEBIAN_FRONTEND=noninteractive
 
 # Update OS
 echo "Checking for system updates..."
-sudo apt-get update
+sudo apt-get -yq upgrade
 
 echo "Upgrading system packages ..."
-sudo apt-get -yqf upgrade
+sudo apt-get -yq update
 
 echo "Installing new packages..."
 sudo apt-get install -yq python3 python3-pip tcpdump git chromium-browser nautilus openssh-server sshpass squid3 squid-cgi apache2 xdotool unclutter lsb-core lsb libc6-dev-i386 gcc
 
 pip3 install evdev
 
+echo "Installing lsb packages..."
+sudo apt-get install -yq lsb-core lsb
+
 if [ $INSTALL_DRIVERS == true ] ; then
+
 	echo "Installing extra drivers..."
+
 	sudo apt-get install -yq libfontconfig1:i386 libx11-6:i386 libxrender1:i386 libxext6:i386 libglu1-mesa:i386 libglib2.0-0:i386 libsm6:i386
-	sudo apt-get install nvidia-361
+	
+    sudo apt-get install nvidia-361
+
 fi
 
 echo "Installing Google Earth..."
-wget -q $EARTH_DEB7
+
+wget -q $EARTH_DEB
+
 sudo dpkg -i google-earth*.deb
-sudo apt-get -f install
 rm google-earth*.deb
 
 # OS config tweaks (like disabling idling, hiding launcher bar, ...)
@@ -183,35 +251,42 @@ sudo apt-get remove --purge -yq update-notifier*
 
 # Setup Liquid Galaxy files
 echo "Setting up Liquid Galaxy..."
-git clone $GIT_URL
 
-sudo cp -r $GIT_FOLDER_NAME/earth/ $HOME
+sudo cp -r $USER_PATH/earth/ $HOME
+
 sudo ln -s $EARTH_FOLDER $HOME/earth/builds/latest
+
 awk '/LD_LIBRARY_PATH/{print "export LC_NUMERIC=en_US.UTF-8"}1' $HOME/earth/builds/latest/googleearth | sudo tee $HOME/earth/builds/latest/googleearth > /dev/null
 
 # Enable solo screen for slaves
 if [ $MASTER != true ]; then
+
 	sudo sed -i -e 's/slave_x/slave_'${MACHINE_ID}'/g' $HOME/earth/kml/slave/myplaces.kml
-	sudo sed -i -e 's/sync_nlc_x/sync_nlc_'${MACHINE_ID}'/g' $HOME/earth/kml/slave/myplaces.kml
+	
+    sudo sed -i -e 's/sync_nlc_x/sync_nlc_'${MACHINE_ID}'/g' $HOME/earth/kml/slave/myplaces.kml
+
 fi
 
-sudo cp -r $GIT_FOLDER_NAME/gnu_linux/home/lg/. $HOME
+sudo cp -r $USER_PATH/gnu_linux/home/lg/. $HOME
 
-cd $HOME"/dotfiles/"
 for file in *; do
-    sudo mv "$file" ".$file"
+
+    sudo mv "$HOME/dotfiles/$file" "$HOME/dotfiles/.$file"
+
 done
+
 sudo cp -r . $HOME
+
 cd - > /dev/null
 
-sudo cp -r $GIT_FOLDER_NAME/gnu_linux/etc/ $GIT_FOLDER_NAME/gnu_linux/patches/ $GIT_FOLDER_NAME/gnu_linux/sbin/ /
+sudo cp -r $USER_PATH/gnu_linux/etc/ $USER_PATH/gnu_linux/patches/ $USER_PATH/gnu_linux/sbin/ /
 
 sudo chmod 0440 /etc/sudoers.d/42-lg
 sudo ln -s /etc/apparmor.d/sbin.dhclient /etc/apparmor.d/disable/
 sudo apparmor_parser -R /etc/apparmor.d/sbin.dhclient
 sudo /etc/init.d/apparmor restart > /dev/null
 sudo chown -R $LOCAL_USER:$LOCAL_USER $HOME
-sudo chown $LOCAL_USER:$LOCAL_USER /home/lg/earth/builds/latest/drivers.ini
+sudo chown $LOCAL_USER:$LOCAL_USER $HOME/earth/builds/latest/drivers.ini
 
 sudo chmod +0666 /dev/uinput
 
@@ -236,6 +311,8 @@ sudo chmod 0600 /etc/ssh/ssh_host_ecdsa_key
 sudo chmod 0600 /etc/ssh/ssh_host_rsa_key
 sudo chown -R $LOCAL_USER:$LOCAL_USER $HOME/.ssh
 
+sudo chmod 777 /tmp/
+
 # prepare SSH files for other nodes (slaves)
 if [ $MASTER == true ]; then
 	mkdir -p ssh-files/etc
@@ -257,7 +334,7 @@ cat > $HOME/personavars.txt << 'EOM'
 DHCP_LG_FRAMES="lg3 lg1 lg2"
 DHCP_LG_FRAMES_MAX=3
 
-FRAME_NO=$(cat /home/lg/frame 2>/dev/null)
+FRAME_NO=$(cat $HOME/frame 2>/dev/null)
 DHCP_LG_SCREEN="$(( ${FRAME_NO} + 1 ))"
 DHCP_LG_SCREEN_COUNT=1
 DHCP_OCTET=42
@@ -335,7 +412,7 @@ EOM
 
 # Launch on boot
 mkdir -p $HOME/.config/autostart/
-echo -e "[Desktop Entry]\nName=LG\nExec=bash "$HOME"/bin/startup-script.sh\nType=Application" > $HOME"/.config/autostart/lg.desktop"
+echo -e "[Desktop Entry]\nName=LG\nExec=bash "$HOME"/earth/scripts/launch-earth.sh\nType=Application" > $HOME"/.config/autostart/lg.desktop"
 
 gcc -m32 -o "$HOME"/write-event $GIT_FOLDER_NAME/input_event/write-event.c 
 sudo chmod 0755 "$HOME"/write-event
@@ -347,12 +424,12 @@ if [ $MASTER == true ]; then
 	sudo touch /etc/apache2/httpd.conf
 	sudo sed -i '/accept.lock/d' /etc/apache2/apache2.conf
 	sudo rm /var/www/html/index.html
-	sudo cp -r $GIT_FOLDER_NAME/php-interface/. /var/www/html/
+	sudo cp -r $USER_PATH/php-interface/. /var/www/html/
 	sudo chown -R $LOCAL_USER:$LOCAL_USER /var/www/html/
 fi
 
 # Cleanup
-sudo rm -r $GIT_FOLDER_NAME
+sudo rm -r $USER_PATH
 
 #
 # Global cleanup
@@ -362,9 +439,12 @@ echo "Cleaning up..."
 sudo apt-get -yq autoremove
 
 if [ `getconf LONG_BIT` = "64" ]; then
-echo “Installing additional libraries for 64 bit OS”
+echo "Installing additional libraries for 64 bit OS"
 sudo apt-get install -y libfontconfig1:i386 libx11-6:i386 libxrender1:i386 libxext6:i386 libglu1-mesa:i386 libglib2.0-0:i386 libsm6:i386
 fi
+
+#Make chromium default browser 
+xdg-settings set default-web-browser chromium-browser.desktop
 
 echo "Liquid Galaxy installation completed! :-)"
 echo "Press ENTER key to reboot now"
