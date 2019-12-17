@@ -1,0 +1,48 @@
+#!/bin/bash
+# Copyright 2010 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Simulates user-input in order to drop into streetview
+# You probably want "StreetViewNotificationShown=true" in your GoogleEarthPlus.conf
+# 
+# Mon Mar 21 12:34:30 EDT 2011
+# - Kiel C <kiel@endpoint.com>
+#
+
+MASTER_IP=""
+MASTER_USER=$USER
+MASTER_HOME=$HOME
+MASTER_PASSWORD=""
+LOCAL_USER=$USER
+
+sudo -v
+
+read -p "Master machine IP (i.e. 192.168.1.42): " MASTER_IP
+read -p "Master local user password (i.e. lg password): " MASTER_PASSWORD
+
+echo "Starting SSH files sync with master..."
+sshpass -p "$MASTER_PASSWORD" scp -o StrictHostKeyChecking=no $MASTER_IP:$MASTER_HOME/ssh-files.zip $HOME/
+unzip $HOME/ssh-files.zip -d $HOME/ > /dev/null
+sudo cp -r $HOME/ssh-files/etc/ssh /etc/
+sudo cp -r $HOME/ssh-files/root/.ssh /root/ 2> /dev/null
+sudo cp -r $HOME/ssh-files/user/.ssh $HOME/
+sudo rm -r $HOME/ssh-files/
+sudo rm $HOME/ssh-files.zip
+
+sudo chmod 0600 $HOME/.ssh/lg-id_rsa
+sudo chmod 0600 /root/.ssh/authorized_keys
+sudo chmod 0600 /etc/ssh/ssh_host_dsa_key
+sudo chmod 0600 /etc/ssh/ssh_host_ecdsa_key
+sudo chmod 0600 /etc/ssh/ssh_host_rsa_key
+sudo chown -R $LOCAL_USER:$LOCAL_USER $HOME/.ssh

@@ -201,7 +201,9 @@ echo "Upgrading system packages ..."
 sudo apt-get -yq update
 
 echo "Installing new packages..."
-sudo apt-get install -yq git chromium-browser nautilus openssh-server sshpass squid3 squid-cgi apache2 xdotool unclutter
+sudo apt-get install -yq python3 python3-pip tcpdump git chromium-browser nautilus openssh-server sshpass squid3 squid-cgi apache2 xdotool unclutter lsb-core lsb libc6-dev-i386 gcc
+
+pip3 install evdev
 
 echo "Installing lsb packages..."
 sudo apt-get install -yq lsb-core lsb
@@ -221,7 +223,6 @@ echo "Installing Google Earth..."
 wget -q $EARTH_DEB
 
 sudo dpkg -i google-earth*.deb
-
 rm google-earth*.deb
 
 # OS config tweaks (like disabling idling, hiding launcher bar, ...)
@@ -286,6 +287,8 @@ sudo apparmor_parser -R /etc/apparmor.d/sbin.dhclient
 sudo /etc/init.d/apparmor restart > /dev/null
 sudo chown -R $LOCAL_USER:$LOCAL_USER $HOME
 sudo chown $LOCAL_USER:$LOCAL_USER $HOME/earth/builds/latest/drivers.ini
+
+sudo chmod +0666 /dev/uinput
 
 # Configure SSH
 if [ $MASTER == true ]; then
@@ -390,7 +393,8 @@ sudo tee "/etc/iptables.conf" > /dev/null << EOM
 -A INPUT -p tcp -m multiport --dports 22 -j ACCEPT
 -A INPUT -s 10.42.0.0/16 -p udp -m udp --dport 161 -j ACCEPT
 -A INPUT -s 10.42.0.0/16 -p udp -m udp --dport 3401 -j ACCEPT
--A INPUT -p tcp -m multiport --dports 81,8111 -j ACCEPT
+-A INPUT -p tcp -m multiport --dports 81,8111,8112 -j ACCEPT
+-A INPUT -p udp -m multiport --dports 8113 -j ACCEPT
 -A INPUT -s 10.42.$OCTET.0/24 -p tcp -m multiport --dports 80,3128,3130 -j ACCEPT
 -A INPUT -s 10.42.$OCTET.0/24 -p udp -m multiport --dports 80,3128,3130 -j ACCEPT
 -A INPUT -s 10.42.$OCTET.0/24 -p tcp -m multiport --dports 9335 -j ACCEPT
@@ -409,6 +413,9 @@ EOM
 # Launch on boot
 mkdir -p $HOME/.config/autostart/
 echo -e "[Desktop Entry]\nName=LG\nExec=bash "$HOME"/earth/scripts/launch-earth.sh\nType=Application" > $HOME"/.config/autostart/lg.desktop"
+
+gcc -m32 -o "$HOME"/write-event $GIT_FOLDER_NAME/input_event/write-event.c 
+sudo chmod 0755 "$HOME"/write-event
 
 # Web interface
 if [ $MASTER == true ]; then

@@ -1,13 +1,3 @@
-// Released into the public domain, 4 Mar 2011
-// Google, Inc. Jason E. Holt <jholt [at] google.com>
-//
-// Create synthetic input_event structs for a multi-axis device.
-//
-// Compile with:
-// $ gcc -m32 -o write-event write-event.c
-// (Earth is compiled as a 32-bit binary, so we compile with -m32)
-
-
 #include <sys/ioctl.h>
 #include <error.h>
 #include <stdio.h>
@@ -18,8 +8,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <linux/input.h>
+#include <unistd.h>
 
-main(int argc, char **argv) {
+int main(int argc, char **argv) {
   if (argc != 4) {
     printf("Usage: %s fifo axis amount\n\n", argv[0]);
 
@@ -47,19 +38,27 @@ main(int argc, char **argv) {
 
   struct input_event ev;
   struct input_event *event_data = &ev;
-
   struct timeval timestamp;
+
 
   gettimeofday(&timestamp, NULL);
   ev.time = timestamp;
   ev.type = EV_REL;
   ev.value = amount;
   ev.code = axis;
-
-  printf("Writing an input_event with type=EV_REL, value=%d and code=%d\n",
-         ev.value, ev.code);
-
   write(fd, event_data, sizeof(ev));
-  printf("Done.\n");
+  printf("Written an input_event with type=EV_REL, value=%d and code=%d\n", ev.value, ev.code);
+
+  gettimeofday(&timestamp, NULL);
+  ev.time = timestamp;
+  ev.type = EV_SYN;
+  ev.value = 0;
+  ev.code = 0;
+  write(fd, event_data, sizeof(ev));
+  printf("Written an input_event with type=EV_SYN\n");
+
   close(fd);
+  printf("Done.\n");
 }
+
+

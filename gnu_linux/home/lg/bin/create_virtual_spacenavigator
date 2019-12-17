@@ -1,0 +1,20 @@
+#!/usr/bin/python3
+
+import time
+from evdev import UInput, categorize, ecodes
+
+def create_virtual_input():
+    cap = {
+       ecodes.EV_KEY: [ecodes.BTN_0, ecodes.BTN_1],
+       ecodes.EV_REL: [ecodes.REL_X, ecodes.REL_Y, ecodes.REL_Z, ecodes.REL_RX, ecodes.REL_RY, ecodes.REL_RZ],
+       ecodes.EV_LED: [ecodes.LED_MISC],
+       ecodes.EV_MSC: [ecodes.MSC_SCAN]
+    }
+
+    ui = UInput(cap, name='virtual-spaceavigator', version=0x3)
+
+if __name__ == "__main__":
+    create_virtual_input()
+    while True:
+        time.sleep(10)
+
