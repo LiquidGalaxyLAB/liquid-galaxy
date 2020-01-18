@@ -31,7 +31,7 @@ if [[ $FRAME_NO == 0 ]] ; then
 fi
 
 FOV="36.5"
-YAW_AMOUNT="-42"
+YAW_AMOUNT="-36.5"
 
 YAW="$(echo $FRAME_NO '*' $YAW_AMOUNT | bc)"
 # adjust YAW for secondary (further away from LG1) screens
@@ -45,7 +45,7 @@ if [[ -n "${SCREEN_NO}" ]]; then
 fi
 MYIPALIAS="$( awk '/^ifconfig/ {print $3}' /etc/network/if-up.d/*-lg_alias )"
 VSYNCCHOP="${MYIPALIAS%.*}"
-VSYNCHOST="10.42.${VSYNCCHOP##*.}.255"
+VSYNCHOST="192.168.${VSYNCCHOP##*.}.255"
 VSYNCPORT="$EARTH_PORT"
 
 # Adjust ViewSync packet destination if using a ViewSync relay
