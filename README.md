@@ -3,8 +3,10 @@
 # Before Installation
 
 Install the lsb-core and lsb packages for Ubuntu 16.04 : 
-```$ sudo apt install lsb-core 
-$ sudo apt install lsb```
+```
+$ sudo apt install lsb-core 
+$ sudo apt install lsb
+```
 
 Update the package database : `$ sudo apt update`
 
