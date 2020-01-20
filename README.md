@@ -4,15 +4,17 @@
 
 Install the lsb-core and lsb packages for Ubuntu 16.04 : 
 ```
-$ sudo apt install lsb-core 
-$ sudo apt install lsb
+sudo apt install lsb-core 
+sudo apt install lsb
 ```
 
-Update the package database : `$ sudo apt update`
+Update the package database : 
+
+```sudo apt update```
 
 Upgrade your system using the "-f" parameter. This will attempt to correct a system which has broken dependencies:
 
-```$ sudo apt upgrade -f``` . 
+```sudo apt upgrade -f```
 
 ## Installation
 
