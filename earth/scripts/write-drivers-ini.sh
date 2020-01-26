@@ -45,7 +45,7 @@ if [[ -n "${SCREEN_NO}" ]]; then
 fi
 MYIPALIAS="$( awk '/^ifconfig/ {print $3}' /etc/network/if-up.d/*-lg_alias )"
 VSYNCCHOP="${MYIPALIAS%.*}"
-VSYNCHOST="192.168.${VSYNCCHOP##*.}.255"
+VSYNCHOST="10.42.${VSYNCCHOP##*.}.255"
 VSYNCPORT="$EARTH_PORT"
 
 # Adjust ViewSync packet destination if using a ViewSync relay
