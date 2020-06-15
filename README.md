@@ -2,12 +2,19 @@
 
 # Before Installation
 
-Install the lsb-core and lsb packages for Ubuntu 16.04 : $ sudo apt install lsb-core and $ sudo apt install lsb
+Install the lsb-core and lsb packages for Ubuntu 16.04 : 
+```
+sudo apt install lsb-core 
+sudo apt install lsb
+```
 
-Update the package database : $ sudo apt update
+Update the package database : 
 
-Upgrade you system using the "-f" parameter .This will attempt to correct a system which has broken dependencies:
-$ sudo apt upgrade -f . 
+```sudo apt update```
+
+Upgrade your system using the "-f" parameter. This will attempt to correct a system which has broken dependencies:
+
+```sudo apt upgrade -f```
 
 ## Installation
 
@@ -24,7 +31,7 @@ Tested with:
 Machine name: lgX (x = screen number*)<br>
 Username: lg
 
-\* set them clockwise (i.e. lg4 lg5 lg1 lg2 lg3). lg1 is always the master.
+Note: Set the machines clockwise (i.e. lg4 lg5 lg1 lg2 lg3). lg1 is always the master.
 
 Other details such as the account name or user password are not relevant, write whatever. As a general rule, autologin can be set on the installation, however it is not mandatory since it will be done by the script later.
 
