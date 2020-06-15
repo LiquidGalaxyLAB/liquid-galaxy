@@ -31,7 +31,7 @@ if [[ $FRAME_NO == 0 ]] ; then
 fi
 
 FOV="36.5"
-YAW_AMOUNT="-42"
+YAW_AMOUNT="-36.5"
 
 YAW="$(echo $FRAME_NO '*' $YAW_AMOUNT | bc)"
 # adjust YAW for secondary (further away from LG1) screens
