@@ -5,19 +5,19 @@
 Install the lsb-core and lsb packages for Ubuntu 16.04
 
 ```bash
-$ sudo apt install lsb-core lsb
+sudo apt install lsb-core lsb
 ```
 
 Update the package database
 
 ```bash
-$ sudo apt update
+sudo apt update
 ```
 
 Upgrade you system using the "-f" parameter .This will attempt to correct a system which has broken dependencies:
 
 ```bash
-$ sudo apt upgrade -f .
+sudo apt upgrade -f .
 ```
 
 ## Installation
@@ -43,11 +43,15 @@ Other details such as the account name or user password are not relevant, write 
 
 Get and execute installation file on the target machine (from any user folder):
 
-`bash <(curl -s https://raw.githubusercontent.com/LiquidGalaxyLAB/liquid-galaxy/master/install.sh)`
+```bash
+bash <(curl -s https://raw.githubusercontent.com/LiquidGalaxyLAB/liquid-galaxy/master/install.sh)
+```
 
 x64 bits OS might require these additional libraries in order to start Google Earth:
 
-`sudo apt-get install -y libfontconfig1:i386 libx11-6:i386​ libxrender1:i386 libxext6:i386 libglu1-mesa:i386 libglib2.0-0:i386 libsm6:i386`
+```bash
+sudo apt-get install -y libfontconfig1:i386 libx11-6:i386​ libxrender1:i386 libxext6:i386 libglu1-mesa:i386 libglib2.0-0:i386 libsm6:i386
+```
 
 **Master:**
 
@@ -89,7 +93,10 @@ Once the slaves installation has completed (including the reboot), you might hav
 - If your Liquid Galaxy setup is using the screens in vertical, you will have to rotate them manually (on Ubuntu: Launchpad -> Displays -> Rotation -> Counterclockwise).
 - When booting Ubuntu Installation from your USB, if the USB doesn't appear as a boot option in the list of the BIOS, please make sure your CSM (Compatibility Support Module) allows booting from both Legacy and UEFI systems.
 - When opening Google Earth Pro application, if the screen doesn't properly load, it might be due to the incompatiblity between Google Earth Pro 7.3 and X.Org X server. Install Nvidia driver in order to solve the problem with this command:
-  `sudo apt-get install nvidia-384 && shutdown -r now`
+
+```bash
+sudo apt-get install nvidia-384 && shutdown -r now
+```
 
 ### [Optional] API
 
@@ -107,7 +114,9 @@ Liquid Galaxy will by default display Earth's menu bar, which is useful for deve
 
 It is up whether to enable it:
 
-`~/tools/earth-fullscreen.sh && sudo reboot`
+```bash
+~/tools/earth-fullscreen.sh && sudo reboot
+```
 
 Full screen uses another window manager ([Openbox](http://openbox.org/wiki/Main_Page)), which does not share Gnome's display settings. If needed, you can rotate your screens by typing the following:
 
@@ -120,7 +129,9 @@ xrandr -o left;xset s off;xset -dpms;xset s noblank
 
 You can disable it anytime:
 
-`~/tools/revert-earth-fullscreen.sh && sudo reboot`
+```bash
+~/tools/revert-earth-fullscreen.sh && sudo reboot
+```
 
 ## Within this repository
 
